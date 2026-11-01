@@ -60,6 +60,7 @@ decoding:
   repetition_penalty: 1.05                     # same for both arms (model default)
   sampling_seed_rule: "seed = 20261102 + item_index (index in sorted test id list)"
   determinism_check: "rerun greedy on 50 fixed test items; report % identical outputs and answers"
+  determinism_subset: "the first 50 IDs of the sorted test ID list"
   # debug set (run 01 v2): greedy rerun gave the same letter 25/25 but identical text only 19/25
   # (GPU arithmetic is not bit-reproducible under batching even at temperature 0).
   optional_temperatures: [0.3, 1.0]            # only if GPU time remains (D-018)
