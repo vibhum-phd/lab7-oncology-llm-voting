@@ -1,4 +1,11 @@
-# GPU parts, Kaggle only (Linux). NOT pinned yet: the vLLM version is chosen after the Kaggle
-# diagnostics (notebooks/00_environment_test.ipynb, Stage A) show the driver, CUDA, Python and torch.
-# The versions that actually work are then recorded here from `pip freeze` (results/env/).
-# vllm==TO_PIN_AT_PROMPT_08
+# GPU parts, Kaggle only (Linux, GPU T4 x2). Versions that actually ran on 2026-11-01
+# (kernel vibhumsharma/lab7v2-01-vllm-debug-run v2; full list in results/env/kaggle_01_v2/pip_freeze.txt).
+# Install on Kaggle with:
+#   pip install vllm==0.32.0 && pip uninstall -y torchaudio torchao
+# (vllm upgrades torch; Kaggle's preinstalled torchaudio/torchao then clash and are not needed).
+vllm==0.32.0
+torch==2.13.0          # pulled in by vllm; CUDA 13.0 build
+torchvision==0.28.0
+triton==3.7.1
+transformers==5.16.1   # Kaggle preinstalled, unchanged
+flashinfer-python==0.7.0.post1

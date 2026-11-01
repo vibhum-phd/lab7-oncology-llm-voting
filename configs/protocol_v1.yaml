@@ -29,12 +29,13 @@ data:
 
 model:
   name: Qwen/Qwen2.5-7B-Instruct
-  revision: TO_PIN_AT_PROMPT_08                # Hugging Face commit hash
-  dtype: float16                               # T4 has no bfloat16
-  fallback: Qwen/Qwen2.5-7B-Instruct-AWQ       # only if FP16 fails the smoke test; logged as a protocol change
-  engine: vllm                                 # version pinned at Prompt 08; fallback transformers
-  tensor_parallel_size: 2
-  chat_template: model default
+  revision: a09a35458c702b33eeacc393d103063234e8bc28   # pinned 2026-11-01 (run 00)
+  dtype: float16                               # T4 has no native bfloat16; BF16 weights are cast on load
+  fallback: Qwen/Qwen2.5-7B-Instruct-AWQ       # only if FP16 fails; logged as a protocol change
+  engine: vllm==0.32.0                         # ran on 2026-11-01 (run 01 v2); see requirements-gpu.txt
+  engine_args: {tensor_parallel_size: 2, max_model_len: 2048, gpu_memory_utilization: 0.90,
+                enforce_eager: true, disable_custom_all_reduce: true, seed: 20261102}
+  chat_template: model default (tokenizer.apply_chat_template, add_generation_prompt=True)
 
 prompt:
   system: "You are a careful medical expert. Answer the multiple-choice question."
@@ -53,12 +54,14 @@ prompt:
   frozen_after: debug set only                 # the template may change only before freeze
 
 decoding:
-  max_tokens: 512                              # confirm on the debug set (truncation rate < 2%)
+  max_tokens: 512                              # debug set: 0/300 truncated, longest 501 tokens (run 01 v2)
   greedy: {temperature: 0.0, n: 1}
   sampled: {temperature: 0.7, top_p: 0.8, top_k: 20, n: 10}   # model's own generation_config defaults
   repetition_penalty: 1.05                     # same for both arms (model default)
   sampling_seed_rule: "seed = 20261102 + item_index (index in sorted test id list)"
   determinism_check: "rerun greedy on 50 fixed test items; report % identical outputs and answers"
+  # debug set (run 01 v2): greedy rerun gave the same letter 25/25 but identical text only 19/25
+  # (GPU arithmetic is not bit-reproducible under batching even at temperature 0).
   optional_temperatures: [0.3, 1.0]            # only if GPU time remains (D-018)
 
 parsing:
@@ -102,6 +105,8 @@ analyses:
 compute:
   platform: Kaggle, 2 x T4 16 GB, internet on
   budget_gpu_hours: {primary: 4, cap_total: 8}   # weekly Kaggle quota 30 h (D-026)
+  # measured on the debug set (run 01 v2): ~671 output tokens/s for sampled runs, model load 160 s;
+  # primary plan ~1.85 M output tokens -> roughly 1-1.5 h of session time (INFERRED from that rate).
   resumable: true                              # outputs appended per item; restart skips done items
 
 outputs:

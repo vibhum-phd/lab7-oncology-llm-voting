@@ -1,0 +1,62 @@
+{
+ "versions": {
+  "vllm": "0.32.0",
+  "torch": "2.13.0+cu130",
+  "transformers": "5.16.1",
+  "python": "3.13.15"
+ },
+ "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+ "n_items": 25,
+ "load_seconds": 159.8,
+ "prompt_tokens_max": 400,
+ "prompt_tokens_mean": 264.6,
+ "generations": {
+  "greedy": 25,
+  "greedy_rerun": 25,
+  "sampled": 250
+ },
+ "seconds": {
+  "greedy": 37.8,
+  "greedy_rerun": 26.2,
+  "sampled": 98.7
+ },
+ "output_tokens": {
+  "greedy": 6933,
+  "greedy_rerun": 6897,
+  "sampled": 66222
+ },
+ "tokens_per_second": {
+  "greedy": 183.6,
+  "greedy_rerun": 263.2,
+  "sampled": 670.9
+ },
+ "new_tokens_mean_max": {
+  "greedy": [
+   277.3,
+   420
+  ],
+  "greedy_rerun": [
+   275.9,
+   420
+  ],
+  "sampled": [
+   264.9,
+   501
+  ]
+ },
+ "unparseable": {
+  "greedy": 0,
+  "greedy_rerun": 0,
+  "sampled": 0
+ },
+ "truncated_length": {
+  "greedy": 0,
+  "greedy_rerun": 0,
+  "sampled": 0
+ },
+ "greedy_rerun_identical_text": 19,
+ "greedy_rerun_identical_letter": 25,
+ "pipeline_check_only__accuracy_greedy": 15,
+ "pipeline_check_only__accuracy_vote": 15,
+ "pipeline_check_only__items_unanimous_10of10": 13
+}

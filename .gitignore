@@ -29,3 +29,10 @@ paper/*.fls
 paper/*.log
 paper/*.out
 paper/*.synctex.gz
+
+# Kaggle run downloads: logs and generation files quote MedQA item text; only pip freezes and
+# text-free summaries are committed.
+results/env/*/*.jsonl
+results/env/*/*.log
+results/env/*/log_text.txt
+results/env/*/repo/
