@@ -1,0 +1,19 @@
+id,code,reason
+dev-00160,X,EBM/drug-advert reading; answer depends on advert data not oncology knowledge
+dev-00844,X,tests osmotic demyelination after sodium correction; cancer incidental
+dev-01220,X,cardiac (atrial) myxoma: benign tumour not managed by oncology (scope rule)
+test-00292,X,atrial myxoma complication: benign tumour not managed by oncology
+train-00310,X,EBM/drug-advert reading
+train-02162,M,hypercalcaemia of malignancy (low PTH after breast cancer): zoledronic acid
+train-02540,X,atrial myxoma imaging: benign tumour not managed by oncology
+train-02790,X,asbestosis risk factor; Hodgkin history incidental
+train-03296,X,methotrexate for rheumatoid arthritis
+train-03517,M,primary CNS lymphoma on biopsy: high-dose methotrexate
+train-03952,M,menopausal symptom treatment chosen because of breast cancer history (survivorship)
+train-05194,X,methotrexate for psoriasis/psoriatic arthritis
+train-07084,X,methotrexate for rheumatoid arthritis
+train-07520,X,inflammatory myopathy; image reference
+train-08023,O,adverse effect of vinblastine (myelosuppression and fungal infection)
+train-08513,M,work-up of suspected ovarian neoplasm: pelvic ultrasound
+train-09251,M,work-up of a breast mass (fat necrosis vs cancer)
+train-09320,X,methotrexate for rheumatoid arthritis

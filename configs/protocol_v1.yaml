@@ -1,0 +1,110 @@
+# Experiment protocol, version 1. STATUS: DRAFT, not frozen.
+# Freeze = Sir approves, the split is generated, the hashes below are filled in, and this file is
+# committed to the repository (Prompt 08). After that, every change goes to research_decisions.md
+# "Protocol changes" with date, reason, whether results had been seen, and whether reruns are needed.
+status: DRAFT
+version: 1
+decisions: [D-012, D-016, D-018, D-020, D-021, D-022, D-023, D-025, D-026]
+
+data:
+  source: GBaker/MedQA-USMLE-4-options-hf      # Hugging Face, auto-converted parquet
+  dataset_commit: 17af9355ef89fba60de966eabaeba797c695f86e
+  splits_used: [train, validation, test]       # inference only; MedQA's own splits are not used as such
+  selection:
+    pool_rule: "oncology term in vignette (relative's history excluded) OR in correct answer"
+    screening_rules: data/screening/SCREENING_RULES.md
+    codes_file: data/screening/codes_adjudicated.csv   # agreement report: data/screening/SCREENING_AGREEMENT.md
+    eligible_codes: [M, O]
+    exclude_flags: [image_ref, bare_letter_options]
+  split:
+    script: scripts/make_splits.py
+    seed: 20261102
+    debug_n: 25                                # prompt/parser development only
+    # Generated 2026-11-01 from codes_adjudicated.csv (data/splits/SPLIT_MANIFEST.json):
+    # 658 items = 25 debug (5 M) + 633 test (118 M, 515 O; 271 in the objective subset).
+    debug_ids_sha256: 57354831f08a5f5a71832fe4659f1f6f531ca15698027cd2545da1f1c5024580
+    test_ids_sha256: cb1c708512d34fa727d419074a9a35256286158cf609b70baf82440dc3bfb618
+  subgroups: {management: M, other: O}
+  objective_subset: "oncology term in the correct answer (rule R4)"
+
+model:
+  name: Qwen/Qwen2.5-7B-Instruct
+  revision: TO_PIN_AT_PROMPT_08                # Hugging Face commit hash
+  dtype: float16                               # T4 has no bfloat16
+  fallback: Qwen/Qwen2.5-7B-Instruct-AWQ       # only if FP16 fails the smoke test; logged as a protocol change
+  engine: vllm                                 # version pinned at Prompt 08; fallback transformers
+  tensor_parallel_size: 2
+  chat_template: model default
+
+prompt:
+  system: "You are a careful medical expert. Answer the multiple-choice question."
+  user_template: |
+    {question}
+
+    Options:
+    A. {option_a}
+    B. {option_b}
+    C. {option_c}
+    D. {option_d}
+
+    Think through the question briefly, step by step. Then give your final answer on the last line,
+    exactly in the form "Answer: X", where X is one of A, B, C or D.
+  option_order: as in the dataset (ending0..ending3 -> A..D)
+  frozen_after: debug set only                 # the template may change only before freeze
+
+decoding:
+  max_tokens: 512                              # confirm on the debug set (truncation rate < 2%)
+  greedy: {temperature: 0.0, n: 1}
+  sampled: {temperature: 0.7, top_p: 0.8, top_k: 20, n: 10}   # model's own generation_config defaults
+  repetition_penalty: 1.05                     # same for both arms (model default)
+  sampling_seed_rule: "seed = 20261102 + item_index (index in sorted test id list)"
+  determinism_check: "rerun greedy on 50 fixed test items; report % identical outputs and answers"
+  optional_temperatures: [0.3, 1.0]            # only if GPU time remains (D-018)
+
+parsing:
+  # Capital letter only, not followed by another letter, so "Answer: a combination of ..." is not read as A.
+  primary_regex: "[Aa]nswer\\s*:\\s*\\(?([ABCD])\\)?(?![A-Za-z])"   # last match in the output
+  fallback_regex: "[Aa]nswer is\\s*\\(?([ABCD])\\)?(?![A-Za-z])"     # last match, only if primary fails
+  unparseable: "counted wrong (strict); excluded in the lenient analysis"
+  vote: "most frequent parsed letter among the 10 sampled runs; unparseable runs do not vote; tie -> letter of the earliest sampled run among the tied letters; all 10 unparseable -> unparseable"
+
+metrics:
+  primary:
+    name: accuracy_difference_majority10_minus_greedy
+    direction: higher_is_better
+    test: exact McNemar (two-sided, alpha 0.05)
+    ci: paired percentile bootstrap over items, 10000 resamples, seed 20261102
+    decision: "supported if p < 0.05 and CI lower bound > 0; practically meaningful if difference >= 3 points"
+  secondary:
+    - {name: accuracy_greedy, direction: higher_is_better}
+    - {name: accuracy_majority10, direction: higher_is_better}
+    - {name: accuracy_single_sample_mean, direction: higher_is_better, note: "mean and SD over the 10 runs"}
+    - {name: chance_corrected_accuracy, formula: "(acc - 0.25) / 0.75", direction: higher_is_better}
+    - {name: unanimity_rate, formula: "share of items with 10/10 identical parsed answers", direction: descriptive}
+    - {name: mean_modal_share, direction: descriptive}
+    - {name: fleiss_kappa_across_runs, categories: [A, B, C, D, unparseable], direction: descriptive}
+    - {name: pairwise_flip_rate, formula: "share of run pairs with different answers, averaged over items", direction: descriptive}
+    - {name: auroc_modal_share_vs_majority_correct, direction: higher_is_better, decision: "H3 supported if CI lower bound > 0.5"}
+    - {name: accuracy_by_agreement, groups: [">=9/10", "<9/10"]}
+    - {name: unparseable_rate, direction: lower_is_better}
+    - {name: truncation_rate, direction: lower_is_better}
+    - {name: output_tokens_and_gpu_seconds_per_arm, direction: lower_is_better}
+  confirmatory: [accuracy_difference_majority10_minus_greedy]   # everything else is secondary/exploratory
+
+analyses:
+  sensitivity: [lenient_parsing, objective_subset_R4, management_vs_other]
+  deep:
+    - "majority-of-k curve for k = 1, 3, 5, 7, 9, 10 (first k runs; efficiency)"
+    - "error analysis of discordant items (majority right / greedy wrong and the reverse), with real examples"
+    - "items wrong in all 11 generations: answer patterns"
+  optional: [temperature_sweep_0.3_1.0, contamination_probe_100_items]
+
+compute:
+  platform: Kaggle, 2 x T4 16 GB, internet on
+  budget_gpu_hours: {primary: 4, cap_total: 8}   # weekly Kaggle quota 30 h (D-026)
+  resumable: true                              # outputs appended per item; restart skips done items
+
+outputs:
+  raw: results/raw/{arm}.jsonl                 # prompt id, seed, raw text, parsed letter, tokens, time
+  table_results: results/results.csv
+  figures: results/figures/

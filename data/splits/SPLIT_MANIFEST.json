@@ -1,0 +1,21 @@
+{
+  "codes_file": "codes_adjudicated.csv",
+  "seed": 20261102,
+  "debug_n": 25,
+  "eligible_before_exclusions": 712,
+  "excluded_image_or_bare_letter": 54,
+  "final_items": 658,
+  "objective_subset_in_test": 271,
+  "splits": {
+    "debug": {
+      "n": 25,
+      "sha256": "57354831f08a5f5a71832fe4659f1f6f531ca15698027cd2545da1f1c5024580",
+      "M": 5
+    },
+    "test": {
+      "n": 633,
+      "sha256": "cb1c708512d34fa727d419074a9a35256286158cf609b70baf82440dc3bfb618",
+      "M": 118
+    }
+  }
+}

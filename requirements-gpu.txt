@@ -1,0 +1,4 @@
+# GPU parts, Kaggle only (Linux). NOT pinned yet: the vLLM version is chosen after the Kaggle
+# diagnostics (notebooks/00_environment_test.ipynb, Stage A) show the driver, CUDA, Python and torch.
+# The versions that actually work are then recorded here from `pip freeze` (results/env/).
+# vllm==TO_PIN_AT_PROMPT_08

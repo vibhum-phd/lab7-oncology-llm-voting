@@ -1,0 +1,206 @@
+id,code,note
+dev-00006,O,cancer cachexia mechanism in stage IV lung cancer
+dev-00098,M,borderline: PE in recent breast cancer patient; cancer-associated VTE treated with LMWH
+dev-00111,O,tumor lysis syndrome after chemo; rasburicase mechanism
+dev-00173,O,Lynch syndrome colon cancer gene
+dev-00196,O,myeloma AL amyloid on renal biopsy
+dev-00246,O,esophageal squamous cell carcinoma
+dev-00255,O,borderline: tamponade echo in treated breast cancer; likely malignant effusion; distractors are cancer-treatment cardiac effects
+dev-00259,O,answer is colon cancer (S. gallolyticus endocarditis)
+dev-00492,M,HER2+ breast cancer trastuzumab
+dev-00507,X,borderline: facial nerve injury after parotidectomy for cancer = surgical anatomy
+dev-00520,O,lip squamous cell carcinoma diagnosis
+dev-00662,O,acanthosis nigricans paraneoplastic gastric cancer
+dev-00665,O,borderline: occupational carcinogen (arsenic) for lung cancer; answer is arsenic biochemistry
+dev-00718,M,stage III NSCLC concurrent chemoradiotherapy
+dev-00761,X,H. pylori salvage therapy; family cancer history incidental
+dev-00798,X,borderline: hypovolemia signs after colectomy; generic shock physiology not dependent on cancer
+dev-00879,O,anastrozole adverse effect
+dev-01003,O,bleomycin mechanism
+dev-01044,O,myeloma amyloid cardiomyopathy
+dev-01129,O,gastrinoma (neuroendocrine tumour)
+dev-01180,O,trastuzumab other indication; answer gastric cancer
+dev-01184,O,villous adenoma premalignant polyp
+dev-01220,X,cardiac myxoma (tumor plop) - benign lesion excluded by rule
+test-00012,O,NF2 meningioma risk
+test-00015,O,porcelain gallbladder; gallbladder cancer to exclude
+test-00082,O,melanoma subtype risk by ethnicity
+test-00120,X,ureter injury at hysterectomy for endometrial cancer = surgical anatomy
+test-00131,O,borderline: post-thyroidectomy hypocalcemia after cancer surgery; ECG finding
+test-00198,O,borderline: GnRH analogue given for infertility; answer is prostate cancer
+test-00201,O,OCP reduces ovarian cancer risk
+test-00289,O,neuroblastoma histology (opsoclonus-myoclonus)
+test-00301,X,borderline: Wilms tumour but question tests embryological origin (mesoderm)
+test-00460,O,Leydig cell tumour
+test-00646,O,breast cancer prognosis stage
+test-00731,O,T-ALL prognosis cytogenetics
+test-00747,X,anti-GBM disease; cyclophosphamide non-cancer use
+test-00781,O,borderline: RCC HIF stabilisation tested via blotting technique
+test-00857,O,aldesleukin mechanism for melanoma
+test-00998,X,breaking bad news = communication
+test-01042,O,Down syndrome ALL risk
+test-01069,O,phyllodes tumour
+test-01094,O,Hodgkin lymphoma paraneoplastic minimal change disease
+train-00020,M,metastatic prostate cancer cauda equina compression; steroids before MRI
+train-00044,X,superior laryngeal nerve injury in thyroid cancer surgery = surgical anatomy
+train-00075,O,answer is multiple myeloma predisposing to pneumonia
+train-00096,M,borderline: prevention of cisplatin nephrotoxicity (amifostine) = supportive care
+train-00301,O,melanoma diagnosis
+train-00365,O,insulinoma
+train-00370,O,prostate cancer metastasis sign
+train-00392,X,CKD mineral disorder; malignancy negated
+train-00580,O,CLL
+train-00696,O,anal SCC HPV pathogenesis TP53
+train-00725,O,borderline: SIBO after gastrectomy for gastric cancer (treatment sequela)
+train-00776,O,Lynch endometrial MSI
+train-00792,O,vincristine neuropathy
+train-00828,O,Bowen disease (SCC in situ)
+train-00898,O,cervical cancer screening/HPV vaccine in adolescent
+train-01001,M,hypercalcemia of malignancy IV saline
+train-01006,O,blastic prostate metastasis labs
+train-01046,X,Whipple disease
+train-01086,O,lung SCC prognosis
+train-01141,O,metastasis mechanism MMP
+train-01296,X,borderline: osteocyte gap junction histology; prostate cancer incidental
+train-01372,O,melanoma features
+train-01443,M,borderline: suspected lung cancer with SIADH seizure; hypertonic saline
+train-01459,O,asbestosis bronchogenic carcinoma risk
+train-01465,M,CML dasatinib
+train-01529,O,borderline: acute pericarditis after breast radiotherapy (treatment complication)
+train-01686,M,borderline: mesna to prevent hemorrhagic cystitis = supportive care
+train-01748,O,alpha-1 antitrypsin deficiency HCC risk
+train-01831,O,borderline: flutamide identified by mechanism (pharmacology not management choice)
+train-01944,X,Listeria meningitis coverage by age; colorectal cancer history incidental
+train-02029,X,borderline: advance directive DNR vs intubation in metastatic cancer = ethics; sepsis care
+train-02072,O,borderline: chemoport-related S. aureus endocarditis (treatment complication)
+train-02138,O,melanoma prognosis vertical growth
+train-02146,M,borderline: zoster in Hodgkin patient on chemo; IV acyclovir
+train-02209,X,gallbladder adenomyomatosis benign; no malignancy
+train-02212,X,RA etanercept TB screening; methotrexate non-cancer
+train-02245,X,borderline: fever + back pain likely spinal epidural abscess; breast cancer history not decisive
+train-02282,X,UTI; cervical cancer history incidental
+train-02306,O,pernicious anemia gastric carcinoma risk
+train-02307,X,diverticulosis; colorectal carcinoma only a wrong option
+train-02373,X,iron poisoning
+train-02411,X,borderline: ABO transfusion reaction in AML patient; transfusion medicine not cancer-specific
+train-02464,M,solitary brain metastasis resection
+train-02500,X,lead-time bias = epidemiology
+train-02532,X,COC contraindication; family cancer history incidental
+train-02620,O,Sertoli-Leydig cell tumour
+train-02674,O,pheochromocytoma
+train-02765,X,borderline: rectal cancer venous drainage route = anatomy
+train-02818,O,Wilms tumour
+train-02905,O,myeloma amyloid cardiomyopathy
+train-02972,O,CML diagnosis
+train-02987,X,borderline: epidural hematoma after colectomy (anesthesia/heparin) - generic perioperative
+train-03043,X,length-time bias = epidemiology
+train-03055,O,borderline: HPV vaccine eligibility = cervical cancer prevention
+train-03086,M,borderline: hospice eligibility for metastatic lung cancer = palliative care
+train-03120,X,NNH statistics
+train-03124,X,ELISA lab method; ovarian tumour marker incidental
+train-03153,X,borderline: alternative splicing; lung cancer research context only
+train-03173,O,HPV cervical carcinoma risk
+train-03412,M,borderline: zoster in CLL patient on chemo; famciclovir with renal impairment
+train-03553,O,EBV Hodgkin lymphoma risk
+train-03596,O,Li-Fraumeni TP53
+train-03625,O,gastrinoma
+train-03801,O,tamoxifen effects
+train-03849,M,CINV prophylaxis regimen
+train-03884,O,carcinoid syndrome telotristat mechanism
+train-04012,O,borderline: melanoma neural crest origin; answer is neuroblastoma
+train-04033,O,endometrial carcinoma risk factor nulliparity
+train-04041,X,borderline: infantile hemangioma benign; not oncology
+train-04088,O,ulcerative colitis colorectal cancer risk
+train-04281,X,borderline: simple breast cyst FNA; benign cyst
+train-04307,M,borderline: TLS prevention (urine alkalinization) = supportive care
+train-04331,M,limited-stage SCLC chemoradiation
+train-04387,O,marantic endocarditis in lung adenocarcinoma
+train-04389,O,colorectal cancer screening by family history
+train-04462,O,Down syndrome ALL risk
+train-04503,O,craniopharyngioma origin
+train-04584,X,congenital pulmonary airway malformation not neoplasm
+train-04588,X,wound healing vitamin A; methotrexate for RA
+train-04647,M,laryngeal cancer airway obstruction tracheostomy
+train-04781,X,Wells score; cancer negated
+train-04802,O,renal cell carcinoma
+train-04823,O,BRCA DNA repair
+train-04972,O,BCC local invasion
+train-04982,O,cryptorchidism testicular cancer risk
+train-05033,O,lung SCC with hypercalcemia
+train-05137,X,attributable risk calculation
+train-05144,X,dyspepsia test-and-treat; GI cancer negated
+train-05159,M,Ph+ leukemia imatinib
+train-05215,X,ethics insurer pressure
+train-05262,M,CIN2-3 in pregnancy management
+train-05330,X,sensitivity calculation
+train-05386,X,aortic stenosis Heyde syndrome; BCC history incidental
+train-05437,X,vagus injury at esophagectomy = surgical anatomy
+train-05524,M,painful bone metastasis local radiation
+train-05531,O,smoking + asbestos bronchogenic carcinoma
+train-05532,O,cervical cancer screening age
+train-05544,O,Burkitt lymphoma diagnosis
+train-05587,O,polyp malignant potential
+train-05640,O,borderline: cauda equina syndrome likely from prostate cancer metastasis; localisation
+train-05800,O,borderline: central DI after meningioma surgery (treatment complication)
+train-05818,O,CLL
+train-06020,O,Lynch MMR
+train-06029,O,etoposide mechanism
+train-06128,X,bupropion smoking cessation; bladder cancer worry incidental
+train-06187,X,somatic symptom disorder; malignancy wrong option
+train-06205,O,multiple myeloma
+train-06266,O,carcinoma in situ histology
+train-06299,O,esophageal adenocarcinoma
+train-06311,O,RCC origin PCT
+train-06330,M,borderline: DVT after colectomy for colon cancer; compression ultrasound
+train-06381,X,subacute thyroiditis; lymphoma wrong option
+train-06410,X,SLE AIHA; methotrexate non-cancer
+train-06426,X,borderline: SVC syndrome from lung tumour; tests embryology of SVC
+train-06452,O,RCC risk factor smoking
+train-06575,O,ovarian cancer
+train-06592,O,vincristine ptosis
+train-06687,O,exemestane adverse effect
+train-06727,X,borderline: post-colectomy surgical bleeding = generic surgical hemostasis
+train-06737,M,breast cancer in pregnancy surgery + chemo
+train-06773,O,borderline: DIC in pancreatic cancer (malignancy or sepsis)
+train-07073,O,CML
+train-07105,O,borderline: premature ovarian insufficiency late effect of childhood ALL treatment
+train-07178,X,odds ratio rare disease assumption = epidemiology
+train-07275,O,carcinoid syndrome
+train-07318,O,bladder cancer aromatic amines
+train-07423,X,uterine leiomyoma
+train-07483,M,borderline: BRCA testing + breast ultrasound next steps (risk + work-up of breast mass)
+train-07506,M,borderline: metoclopramide dystonia during ovarian cancer chemo; benztropine
+train-07595,O,small cell lung carcinoma
+train-07612,X,septic shock TNF
+train-07636,O,liposarcoma
+train-07683,X,RA perioperative steroids; methotrexate non-cancer
+train-07699,O,pineal tumour Parinaud
+train-07729,O,P-glycoprotein chemoresistance
+train-07758,M,localised RCC nephrectomy
+train-07824,O,lung SCC hematogenous metastasis
+train-07988,X,ALPS (Fas defect) not neoplasm; follicular lymphoma wrong option
+train-08012,O,rhabdomyosarcoma desmin
+train-08128,O,mucinous cystadenocarcinoma
+train-08194,O,radiation therapy DNA repair (NHEJ)
+train-08297,O,endometrial carcinoma risk family history
+train-08300,M,borderline: HIT during treatment of cancer-associated PE; stop heparin
+train-08301,X,methotrexate RA; transaminase cofactor
+train-08585,X,syncope prerenal; methotrexate RA
+train-08619,O,dermatomyositis associated breast cancer (paraneoplastic)
+train-08640,O,borderline: post-thyroidectomy hypoparathyroidism (cancer surgery); PTH signalling
+train-08652,O,SCLC SIADH
+train-08689,O,carcinoid tumour
+train-08713,O,BRCA homologous recombination
+train-08763,O,Peutz-Jeghers pancreatic carcinoma
+train-08867,O,VZV reactivation from chemotherapy in ALL
+train-09017,X,defense mechanism; cancer incidental
+train-09164,O,borderline: B-ALL flow cytometry markers (diagnosis not management)
+train-09231,O,colorectal cancer screening
+train-09368,M,MALT lymphoma H. pylori eradication
+train-09452,O,ALL diagnosis
+train-09834,X,specificity calculation
+train-09854,M,borderline: antiemetic choice for chemo nausea in Parkinson disease
+train-09920,M,medullary thyroid carcinoma vandetanib
+train-09924,M,metastatic cord compression surgery + RT
+train-09962,X,borderline: hepatic hemangioma (benign) OCP risk; thyroid cancer history incidental
+train-10107,X,NPV calculation

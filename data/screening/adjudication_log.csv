@@ -1,0 +1,16 @@
+id,first,second,final,reason
+test-00131,X,O,X,hypocalcaemia after thyroidectomy is a generic post-operative complication (rules addendum)
+train-00725,X,O,X,bacterial overgrowth after gastrectomy years later is a generic post-surgical sequela
+train-01443,X,M,M,full text: smoker with weight loss and haemoptysis (suspected lung cancer) with seizure from paraneoplastic hyponatraemia; treatment asked
+train-01831,M,O,O,question identifies the drug by mechanism (pharmacology) rather than choosing treatment
+train-02029,M,X,X,advance directive and sepsis care; intubation is not a cancer-care action (ethics rule)
+train-02209,M,X,X,full text: gallbladder adenomyomatosis is benign; first code wrong (snippet hid this)
+train-02245,M,X,X,fever and spinal tenderness point to infection; the answer does not depend on the cancer
+train-02765,O,X,O,route of metastatic spread is a property of the neoplasm; kept O for consistency with the other spread-route items in the pool
+train-03153,O,X,X,alternative splicing is general molecular biology; cancer is only the research setting
+train-04281,M,X,X,full text: simple breast cyst (benign lesion rule); first code wrong
+train-05800,X,O,X,diabetes insipidus after pituitary-region surgery is a generic post-operative complication
+train-06330,X,M,X,post-operative day-3 DVT is a generic post-operative complication (rules addendum)
+train-07506,X,M,M,dystonia from metoclopramide given for chemotherapy nausea: complication of cancer supportive care; treatment asked
+train-08300,X,M,X,heparin-induced thrombocytopenia is a complication of heparin; not of the cancer or its treatment
+train-08640,X,O,X,hypocalcaemia after thyroidectomy is a generic post-operative complication (rules addendum)

@@ -1,0 +1,31 @@
+# MedQA files and anything containing MedQA item text: never committed (licence unclear, D-022).
+data/raw/
+data/work/
+
+# Raw model outputs can quote item text; only derived, text-free tables are committed (decided at Prompt 13).
+results/raw/
+
+# Secrets and tokens
+.env
+*.token
+kaggle.json
+
+# Python / OS / editor
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+.venv/
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# LaTeX build files
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.log
+paper/*.out
+paper/*.synctex.gz
