@@ -1,10 +1,12 @@
-# Experiment protocol, version 1. STATUS: DRAFT, not frozen.
-# Freeze = Sir approves, the split is generated, the hashes below are filled in, and this file is
-# committed to the repository (Prompt 08). After that, every change goes to research_decisions.md
-# "Protocol changes" with date, reason, whether results had been seen, and whether reruns are needed.
-status: DRAFT
+# Experiment protocol, version 1. STATUS: FROZEN on 2026-11-02 02:06 IST, approved by Vibhum Sharma
+# ("Fix and freeze"), before any test-set output existed. The freezing commit is recorded in
+# research_decisions.md (D-035) and in the repository history. From now on every change goes to the
+# "Protocol changes" table with date, reason, whether results had been seen, and whether reruns are
+# needed, and produces protocol_v2.yaml (this file is kept unchanged).
+status: FROZEN
+frozen: "2026-11-02 02:06 IST"
 version: 1
-decisions: [D-012, D-016, D-018, D-020, D-021, D-022, D-023, D-025, D-026]
+decisions: [D-012, D-016, D-018, D-020, D-021, D-022, D-023, D-025, D-026, D-027, D-031, D-034, D-035]
 
 data:
   source: GBaker/MedQA-USMLE-4-options-hf      # Hugging Face, auto-converted parquet
@@ -67,7 +69,10 @@ decoding:
 
 parsing:
   # Capital letter only, not followed by another letter, so "Answer: a combination of ..." is not read as A.
-  primary_regex: "[Aa]nswer\\s*:\\s*\\(?([ABCD])\\)?(?![A-Za-z])"   # last match in the output
+  # Markdown bold allowed around "Answer" and the letter ("**Final Answer**: D", "Answer: **C**"): added
+  # 2026-11-02 before freezing, after the debug run produced "**Final Answer**: D" (unparseable under the
+  # first rule); on all 600 debug outputs it changes only that one letter.
+  primary_regex: "[Aa]nswer\\**\\s*:\\s*\\**\\s*\\(?([ABCD])\\)?(?![A-Za-z])"   # last match in the output
   fallback_regex: "[Aa]nswer is\\s*\\(?([ABCD])\\)?(?![A-Za-z])"     # last match, only if primary fails
   unparseable: "counted wrong (strict); excluded in the lenient analysis"
   vote: "most frequent parsed letter among the 10 sampled runs; unparseable runs do not vote; tie -> letter of the earliest sampled run among the tied letters; all 10 unparseable -> unparseable"

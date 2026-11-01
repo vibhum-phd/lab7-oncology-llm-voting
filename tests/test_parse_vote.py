@@ -36,7 +36,9 @@ def main() -> int:
         "Answer: a combination of chemotherapy": None,             # lowercase word, not an option
         "Answer: Doxorubicin": None,                                # word starting with D
         "Answer: X": None,                                          # the instruction's placeholder
-        "Answer: **C**": None,                                      # known gap: bold letter only
+        "Answer: **C**": "C",                                       # bold letter (gap closed before freezing)
+        "**Final Answer**: D": "D",                                 # real debug output, run 02
+        "Answer: **Doxorubicin**": None,                            # bold word, still not an option
         "I think the best option is C.": None,                      # no answer line at all
         "": None,
     }

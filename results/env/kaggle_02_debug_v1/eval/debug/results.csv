@@ -1,0 +1,53 @@
+split,metric,subset,value,ci_low,ci_high,n,note
+debug,accuracy_difference_majority10_minus_greedy,all,0.0,-0.16000000000000003,0.16000000000000003,25,"McNemar exact p=1; discordant b=2 (vote only right), c=2 (greedy only right); H1 not supported"
+debug,accuracy_greedy,all,0.6,0.4,0.8,25,
+debug,accuracy_majority10,all,0.6,0.4,0.8,25,
+debug,accuracy_difference_majority10_minus_greedy,all (lenient),0.0,-0.16000000000000003,0.16000000000000003,25,"McNemar exact p=1; discordant b=2 (vote only right), c=2 (greedy only right); H1 not supported"
+debug,accuracy_greedy,all (lenient),0.6,0.4,0.8,25,
+debug,accuracy_majority10,all (lenient),0.6,0.4,0.8,25,
+debug,accuracy_difference_majority10_minus_greedy,objective_subset,0.0,0.0,0.0,10,"McNemar exact p=1; discordant b=0 (vote only right), c=0 (greedy only right); H1 not supported"
+debug,accuracy_greedy,objective_subset,0.5,0.2,0.8,10,
+debug,accuracy_majority10,objective_subset,0.5,0.2,0.8,10,
+debug,accuracy_difference_majority10_minus_greedy,subgroup_M,0.0,-0.6,0.6,5,"McNemar exact p=1; discordant b=1 (vote only right), c=1 (greedy only right); H1 not supported"
+debug,accuracy_greedy,subgroup_M,0.6,0.2,1.0,5,
+debug,accuracy_majority10,subgroup_M,0.6,0.2,1.0,5,
+debug,accuracy_difference_majority10_minus_greedy,subgroup_O,0.0,-0.15000000000000002,0.15000000000000002,20,"McNemar exact p=1; discordant b=1 (vote only right), c=1 (greedy only right); H1 not supported"
+debug,accuracy_greedy,subgroup_O,0.6,0.4,0.8,20,
+debug,accuracy_majority10,subgroup_O,0.6,0.4,0.8,20,
+debug,accuracy_single_sample_mean,all,0.576,,,25,"SD over the 10 runs = 0.0540; min 0.5200, max 0.6800"
+debug,chance_corrected_accuracy_greedy,all,0.4666666666666666,,,25,(acc - 0.25) / 0.75
+debug,chance_corrected_accuracy_majority10,all,0.4666666666666666,,,25,(acc - 0.25) / 0.75
+debug,accuracy_majority_of_first_1,all,0.6,,,25,
+debug,accuracy_majority_of_first_3,all,0.64,,,25,
+debug,accuracy_majority_of_first_5,all,0.52,,,25,
+debug,accuracy_majority_of_first_7,all,0.6,,,25,
+debug,accuracy_majority_of_first_9,all,0.6,,,25,
+debug,accuracy_majority_of_first_10,all,0.6,,,25,
+debug,unanimity_rate,all,0.48,0.28,0.68,25,share of items with 10/10 identical parsed letters
+debug,mean_modal_share,all,0.8439999999999999,0.7719999999999999,0.9159999999999999,25,
+debug,fleiss_kappa_across_runs,all,0.6574315380160504,0.5045190019412114,0.7833975411625916,25,categories A-D + unparseable; bootstrap 2000 resamples
+debug,pairwise_flip_rate,all,0.23555555555555557,0.136,0.3413333333333333,25,"share of the 45 run pairs with different answers, averaged over items"
+debug,auroc_modal_share_vs_majority_correct,all,0.5533333333333333,0.32371794871794873,0.7900110294117647,25,H3 supported if CI lower bound > 0.5; bootstrap 2000 resamples
+debug,accuracy_agreement_ge9,all,0.625,,,16,
+debug,accuracy_agreement_lt9,all,0.5555555555555556,,,9,
+debug,coverage_at_agreement_ge1,all,1.0,,,25,accuracy among covered = 0.6000
+debug,coverage_at_agreement_ge2,all,1.0,,,25,accuracy among covered = 0.6000
+debug,coverage_at_agreement_ge3,all,1.0,,,25,accuracy among covered = 0.6000
+debug,coverage_at_agreement_ge4,all,1.0,,,25,accuracy among covered = 0.6000
+debug,coverage_at_agreement_ge5,all,1.0,,,25,accuracy among covered = 0.6000
+debug,coverage_at_agreement_ge6,all,0.92,,,25,accuracy among covered = 0.6522
+debug,coverage_at_agreement_ge7,all,0.72,,,25,accuracy among covered = 0.6667
+debug,coverage_at_agreement_ge8,all,0.68,,,25,accuracy among covered = 0.6471
+debug,coverage_at_agreement_ge9,all,0.64,,,25,accuracy among covered = 0.6250
+debug,coverage_at_agreement_ge10,all,0.48,,,25,accuracy among covered = 0.5833
+debug,unparseable_rate_greedy,all,0.0,,,25,
+debug,unparseable_rate_sampled,all,0.004,,,250,
+debug,truncation_rate_greedy,all,0.0,,,25,
+debug,truncation_rate_sampled,all,0.0,,,250,
+debug,vote_ties,all,0.0,,,25,decided by the earliest-run rule
+debug,output_tokens_total_greedy,all,6933.0,,,25,
+debug,gpu_seconds_greedy,all,35.88,,,25,"engine wall time for the arm, summed over batches"
+debug,output_tokens_total_sampled,all,65772.0,,,25,
+debug,gpu_seconds_sampled,all,93.46,,,25,"engine wall time for the arm, summed over batches"
+debug,greedy_rerun_identical_letter,rerun_subset,1.0,,,25,
+debug,greedy_rerun_identical_text,rerun_subset,0.72,,,25,
