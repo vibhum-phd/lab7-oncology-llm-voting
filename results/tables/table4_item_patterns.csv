@@ -1,0 +1,8 @@
+Pattern,Items
+Both right,401
+"Vote right, greedy wrong (b)",46
+"Greedy right, vote wrong (c)",24
+Both wrong,162
+Right in all 11 generations (greedy + 10 runs),269
+Wrong in all 11 generations (greedy + 10 runs),78
+Vote decided by the tie rule (earliest run),25

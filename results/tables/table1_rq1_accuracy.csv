@@ -1,0 +1,6 @@
+Analysis,n,Greedy % [95% CI],Majority-of-10 % [95% CI],"Difference, points [95% CI]",Vote only right (b),Greedy only right (c),McNemar exact p,Frozen rule (p < 0.05 and CI > 0)
+All test items (primary),633,"67.1 [63.5, 70.8]","70.6 [67.0, 74.2]","+3.5 [0.9, 6.0]",46,24,0.0115,met
+Lenient: unparseable greedy items dropped,625,"68.0 [64.3, 71.7]","70.9 [67.2, 74.4]","+2.9 [0.3, 5.4]",42,24,0.0356,met
+Objective subset (oncology term in key),271,"64.9 [59.4, 70.5]","71.2 [65.7, 76.8]","+6.3 [2.2, 10.7]",26,9,0.00599,met
+Subgroup M (management),118,"66.9 [58.5, 75.4]","72.0 [63.6, 79.7]","+5.1 [-1.7, 11.9]",11,5,0.21,not met
+Subgroup O (other oncology),515,"67.2 [63.1, 71.3]","70.3 [66.4, 74.2]","+3.1 [0.4, 5.8]",35,19,0.0402,met

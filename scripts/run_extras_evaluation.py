@@ -21,6 +21,7 @@ from board_vote.config import REPO_ROOT, load_config  # noqa: E402
 from board_vote.data import load_medqa, read_ids, select_items  # noqa: E402
 from board_vote.evaluate import evaluate, mcnemar_exact, paired_bootstrap_ci  # noqa: E402
 from board_vote.parse import AnswerParser  # noqa: E402
+from board_vote.plots import fig_temperature  # noqa: E402
 from board_vote.probe import probe_messages  # noqa: E402
 from board_vote.probe import exact_match  # noqa: E402
 
@@ -107,6 +108,8 @@ def main() -> int:
     df.insert(0, "split", a.split)
     df.to_csv(out / "results_v2_exploratory.csv", index=False)
     print(f"{len(df)} exploratory rows -> {out / 'results_v2_exploratory.csv'}")
+    if rerun and all(f"temperature_{t}" in set(df["analysis"]) for _, t in TEMPERATURE_ARMS):
+        print("figure:", ", ".join(p.name for p in fig_temperature(df, out / "figures")))
     return 0
 
 

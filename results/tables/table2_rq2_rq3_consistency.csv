@@ -1,0 +1,9 @@
+Measure,Value [95% CI],n items
+Unanimity (10/10 runs give the same letter),"49.4 [45.5, 53.2]",633
+Mean modal share,"0.858 [0.843, 0.872]",633
+Fleiss' kappa across the 10 runs,"0.715 [0.689, 0.738]",633
+Pairwise flip rate (of 45 run pairs),"21.4 [19.5, 23.3]",633
+AUROC: modal share vs vote correct,"0.737 [0.695, 0.780]",633
+Vote accuracy when >= 9/10 runs agree,83.5 %,406
+Vote accuracy when < 9/10 runs agree,47.6 %,227
+Items with 10/10 agreement: coverage; vote accuracy among them,49.4 %; 86.9 %,633

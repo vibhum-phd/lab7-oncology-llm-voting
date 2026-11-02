@@ -1,0 +1,53 @@
+split,metric,subset,value,ci_low,ci_high,n,note
+test,accuracy_difference_majority10_minus_greedy,all,0.034755134281200584,0.009478672985781977,0.0600315955766193,633,"McNemar exact p=0.01153; discordant b=46 (vote only right), c=24 (greedy only right); H1 supported; meaningful (>= 3 points)"
+test,accuracy_greedy,all,0.6714060031595577,0.6350710900473934,0.707740916271722,633,
+test,accuracy_majority10,all,0.7061611374407583,0.669826224328594,0.7424960505529226,633,
+test,accuracy_difference_majority10_minus_greedy,all (lenient),0.028799999999999937,0.0032000000000000917,0.054400000000000004,625,"McNemar exact p=0.03558; discordant b=42 (vote only right), c=24 (greedy only right); H1 supported"
+test,accuracy_greedy,all (lenient),0.68,0.6432,0.7168,625,
+test,accuracy_majority10,all (lenient),0.7088,0.672,0.744,625,
+test,accuracy_difference_majority10_minus_greedy,objective_subset,0.0627306273062731,0.022140221402213944,0.1070110701107011,271,"McNemar exact p=0.005988; discordant b=26 (vote only right), c=9 (greedy only right); H1 supported; meaningful (>= 3 points)"
+test,accuracy_greedy,objective_subset,0.6494464944649446,0.5940959409594095,0.7047970479704797,271,
+test,accuracy_majority10,objective_subset,0.7121771217712177,0.6568265682656826,0.7675276752767528,271,
+test,accuracy_difference_majority10_minus_greedy,subgroup_M,0.05084745762711862,-0.016949152542372836,0.11864406779661019,118,"McNemar exact p=0.2101; discordant b=11 (vote only right), c=5 (greedy only right); H1 not supported"
+test,accuracy_greedy,subgroup_M,0.6694915254237288,0.5847457627118644,0.7542372881355932,118,
+test,accuracy_majority10,subgroup_M,0.7203389830508474,0.635593220338983,0.7966101694915254,118,
+test,accuracy_difference_majority10_minus_greedy,subgroup_O,0.031067961165048508,0.003883495145631022,0.058252427184466105,515,"McNemar exact p=0.04022; discordant b=35 (vote only right), c=19 (greedy only right); H1 supported; meaningful (>= 3 points)"
+test,accuracy_greedy,subgroup_O,0.6718446601941748,0.6310679611650486,0.7126213592233009,515,
+test,accuracy_majority10,subgroup_O,0.7029126213592233,0.6640776699029126,0.7417475728155339,515,
+test,accuracy_single_sample_mean,all,0.6805687203791468,,,633,"SD over the 10 runs = 0.0055; min 0.6698, max 0.6872"
+test,chance_corrected_accuracy_greedy,all,0.5618746708794102,,,633,(acc - 0.25) / 0.75
+test,chance_corrected_accuracy_majority10,all,0.608214849921011,,,633,(acc - 0.25) / 0.75
+test,accuracy_majority_of_first_1,all,0.684044233807267,,,633,
+test,accuracy_majority_of_first_3,all,0.7014218009478673,,,633,
+test,accuracy_majority_of_first_5,all,0.7140600315955766,,,633,
+test,accuracy_majority_of_first_7,all,0.7030015797788309,,,633,
+test,accuracy_majority_of_first_9,all,0.7030015797788309,,,633,
+test,accuracy_majority_of_first_10,all,0.7061611374407583,,,633,
+test,unanimity_rate,all,0.49447077409162715,0.4549763033175355,0.5323854660347551,633,share of items with 10/10 identical parsed letters
+test,mean_modal_share,all,0.8576619273301739,0.8431279620853082,0.8715639810426541,633,
+test,fleiss_kappa_across_runs,all,0.7148762598826253,0.689242651100754,0.7379455948310522,633,categories A-D + unparseable; bootstrap 2000 resamples
+test,pairwise_flip_rate,all,0.21355099175004383,0.19501492013340357,0.23310514305774968,633,"share of the 45 run pairs with different answers, averaged over items"
+test,auroc_modal_share_vs_majority_correct,all,0.7371665343628973,0.694999313207574,0.7795416568605913,633,H3 supported if CI lower bound > 0.5; bootstrap 2000 resamples
+test,accuracy_agreement_ge9,all,0.8349753694581281,,,406,
+test,accuracy_agreement_lt9,all,0.47577092511013214,,,227,
+test,coverage_at_agreement_ge1,all,1.0,,,633,accuracy among covered = 0.7062
+test,coverage_at_agreement_ge2,all,1.0,,,633,accuracy among covered = 0.7062
+test,coverage_at_agreement_ge3,all,1.0,,,633,accuracy among covered = 0.7062
+test,coverage_at_agreement_ge4,all,0.995260663507109,,,633,accuracy among covered = 0.7079
+test,coverage_at_agreement_ge5,all,0.966824644549763,,,633,accuracy among covered = 0.7239
+test,coverage_at_agreement_ge6,all,0.9067930489731437,,,633,accuracy among covered = 0.7439
+test,coverage_at_agreement_ge7,all,0.8309636650868878,,,633,accuracy among covered = 0.7662
+test,coverage_at_agreement_ge8,all,0.740916271721959,,,633,accuracy among covered = 0.7910
+test,coverage_at_agreement_ge9,all,0.641390205371248,,,633,accuracy among covered = 0.8350
+test,coverage_at_agreement_ge10,all,0.49447077409162715,,,633,accuracy among covered = 0.8690
+test,unparseable_rate_greedy,all,0.01263823064770932,,,633,
+test,unparseable_rate_sampled,all,0.00631911532385466,,,6330,
+test,truncation_rate_greedy,all,0.011058451816745656,,,633,
+test,truncation_rate_sampled,all,0.006003159557661927,,,6330,
+test,vote_ties,all,25.0,,,633,decided by the earliest-run rule
+test,output_tokens_total_greedy,all,157079.0,,,633,
+test,gpu_seconds_greedy,all,427.89000000000004,,,633,"engine wall time for the arm, summed over batches"
+test,output_tokens_total_sampled,all,1577002.0,,,633,
+test,gpu_seconds_sampled,all,1580.42,,,633,"engine wall time for the arm, summed over batches"
+test,greedy_rerun_identical_letter,rerun_subset,0.96,,,50,
+test,greedy_rerun_identical_text,rerun_subset,0.74,,,50,

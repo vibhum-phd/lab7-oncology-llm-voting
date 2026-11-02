@@ -1,0 +1,6 @@
+Setting,Accuracy %,Single-run mean %,"Difference vs greedy, points [95% CI]","McNemar p (b, c)",Unanimity %,Fleiss' kappa,AUROC
+Majority of 10 at T = 0.3,69.5,67.6,"+2.4 [0.2, 4.6]","0.0627 (36, 21)",54.0,0.744,0.721
+Majority of 10 at T = 0.7 (main run),70.6,68.1,"+3.5 [0.9, 6.0]","0.0115 (46, 24)",49.4,0.715,0.737
+Majority of 10 at T = 1.0,70.9,68.3,"+3.8 [0.9, 6.6]","0.0127 (55, 31)",47.6,0.699,0.748
+Greedy rerun of all items (noise floor),66.5,,"-0.6 [-1.6, 0.2]","0.289 (2, 6)",same letter 98.7,,
+Contamination probe (hidden option reproduced exactly),"exact match 4.0 [1.6, 9.8] (Wilson, n = 100)",,,,,,

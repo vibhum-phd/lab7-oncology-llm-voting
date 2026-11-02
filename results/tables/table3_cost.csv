@@ -1,0 +1,4 @@
+Method,Accuracy %,Output tokens,Tokens per item,GPU seconds,Relative tokens,Relative GPU time
+"Greedy (1 run, T = 0)",67.1,157079,248,428,1.0x,1.0x
+"One sampled run (T = 0.7), mean of 10",68.1,157700,249,n/a (generated together),1.0x,n/a
+Majority of 10 sampled runs (T = 0.7),70.6,1577002,2491,1580,10.0x,3.7x

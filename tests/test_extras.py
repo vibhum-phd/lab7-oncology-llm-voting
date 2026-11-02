@@ -72,6 +72,8 @@ def main() -> int:
         check("extras pipeline runs end to end", ok and {"greedy_self_agreement", "temperature_0.3", "temperature_0.7",
                                                         "temperature_1.0", "contamination_probe"} <= analyses,
               f"{len(rows)} rows" if ok else (r1.stderr + r2.stderr + r3.stderr)[-500:])
+        check("exploratory figure 5 written (PNG and PDF)",
+              all((tmp / "eval" / "figures" / f"fig5_temperature_exploratory.{x}").exists() for x in ("png", "pdf")))
 
     print(f"{sum(results)}/{len(results)} checks passed")
     return 0 if all(results) else 1

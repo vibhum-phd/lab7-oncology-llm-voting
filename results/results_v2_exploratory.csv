@@ -1,0 +1,36 @@
+split,analysis,metric,value,ci_low,ci_high,n,note
+test,greedy_self_agreement,same_letter_rate,0.9873617693522907,,,633,
+test,greedy_self_agreement,accuracy_greedy,0.6714060031595577,,,633,
+test,greedy_self_agreement,accuracy_greedy_rerun_full,0.665086887835703,,,633,
+test,greedy_self_agreement,accuracy_difference_rerun_minus_greedy,-0.006319115323854652,-0.01579778830963663,0.0015797788309637184,633,"McNemar exact p=0.2891; b=2, c=6 (noise floor for RQ1; exploratory)"
+test,temperature_0.3,accuracy_difference_majority10_minus_greedy,0.023696682464455,0.0015797788309636074,0.04581358609794639,633,"McNemar exact p=0.06274; discordant b=36 (vote only right), c=21 (greedy only right); H1 not supported (exploratory)"
+test,temperature_0.3,accuracy_majority10,0.6951026856240127,0.6587677725118484,0.7298578199052133,633, (exploratory)
+test,temperature_0.3,accuracy_single_sample_mean,0.6761453396524486,,,633,"SD over the 10 runs = 0.0100; min 0.6572, max 0.6951 (exploratory)"
+test,temperature_0.3,unanimity_rate,0.5402843601895735,0.5023696682464455,0.5781990521327014,633,share of items with 10/10 identical parsed letters (exploratory)
+test,temperature_0.3,mean_modal_share,0.8715639810426541,0.8578199052132701,0.8851500789889415,633, (exploratory)
+test,temperature_0.3,fleiss_kappa_across_runs,0.7438728867226748,0.71903226727863,0.7670358334011755,633,categories A-D + unparseable; bootstrap 2000 resamples (exploratory)
+test,temperature_0.3,pairwise_flip_rate,0.1922064244339126,0.17433737054590134,0.21077760224679656,633,"share of the 45 run pairs with different answers, averaged over items (exploratory)"
+test,temperature_0.3,auroc_modal_share_vs_majority_correct,0.7213259538389072,0.6777007899902247,0.7611893118271426,633,H3 supported if CI lower bound > 0.5; bootstrap 2000 resamples (exploratory)
+test,temperature_0.3,unparseable_rate_sampled,0.009478672985781991,,,6330, (exploratory)
+test,temperature_0.3,truncation_rate_sampled,0.008056872037914692,,,6330, (exploratory)
+test,temperature_0.7,accuracy_difference_majority10_minus_greedy,0.034755134281200584,0.009478672985781977,0.0600315955766193,633,"McNemar exact p=0.01153; discordant b=46 (vote only right), c=24 (greedy only right); H1 supported; meaningful (>= 3 points) (exploratory)"
+test,temperature_0.7,accuracy_majority10,0.7061611374407583,0.669826224328594,0.7424960505529226,633, (exploratory)
+test,temperature_0.7,accuracy_single_sample_mean,0.6805687203791468,,,633,"SD over the 10 runs = 0.0055; min 0.6698, max 0.6872 (exploratory)"
+test,temperature_0.7,unanimity_rate,0.49447077409162715,0.4549763033175355,0.5323854660347551,633,share of items with 10/10 identical parsed letters (exploratory)
+test,temperature_0.7,mean_modal_share,0.8576619273301739,0.8431279620853082,0.8715639810426541,633, (exploratory)
+test,temperature_0.7,fleiss_kappa_across_runs,0.7148762598826253,0.689242651100754,0.7379455948310522,633,categories A-D + unparseable; bootstrap 2000 resamples (exploratory)
+test,temperature_0.7,pairwise_flip_rate,0.21355099175004383,0.19501492013340357,0.23310514305774968,633,"share of the 45 run pairs with different answers, averaged over items (exploratory)"
+test,temperature_0.7,auroc_modal_share_vs_majority_correct,0.7371665343628973,0.694999313207574,0.7795416568605913,633,H3 supported if CI lower bound > 0.5; bootstrap 2000 resamples (exploratory)
+test,temperature_0.7,unparseable_rate_sampled,0.00631911532385466,,,6330, (exploratory)
+test,temperature_0.7,truncation_rate_sampled,0.006003159557661927,,,6330, (exploratory)
+test,temperature_1.0,accuracy_difference_majority10_minus_greedy,0.03791469194312791,0.009478672985781977,0.06635071090047395,633,"McNemar exact p=0.01267; discordant b=55 (vote only right), c=31 (greedy only right); H1 supported; meaningful (>= 3 points) (exploratory)"
+test,temperature_1.0,accuracy_majority10,0.7093206951026856,0.6729857819905213,0.7440758293838863,633, (exploratory)
+test,temperature_1.0,accuracy_single_sample_mean,0.6829383886255924,,,633,"SD over the 10 runs = 0.0111; min 0.6714, max 0.6998 (exploratory)"
+test,temperature_1.0,unanimity_rate,0.4755134281200632,0.43759873617693523,0.5150078988941548,633,share of items with 10/10 identical parsed letters (exploratory)
+test,temperature_1.0,mean_modal_share,0.8492890995260666,0.8347551342812006,0.8635071090047391,633, (exploratory)
+test,temperature_1.0,fleiss_kappa_across_runs,0.6993948273840699,0.6725682454088904,0.7235847706746841,633,categories A-D + unparseable; bootstrap 2000 resamples (exploratory)
+test,temperature_1.0,pairwise_flip_rate,0.22541688608039315,0.20628400912761102,0.24528699315429175,633,"share of the 45 run pairs with different answers, averaged over items (exploratory)"
+test,temperature_1.0,auroc_modal_share_vs_majority_correct,0.7476094219037475,0.7050466124037822,0.7892446756386672,633,H3 supported if CI lower bound > 0.5; bootstrap 2000 resamples (exploratory)
+test,temperature_1.0,unparseable_rate_sampled,0.008530805687203791,,,6330, (exploratory)
+test,temperature_1.0,truncation_rate_sampled,0.007424960505529226,,,6330, (exploratory)
+test,contamination_probe,exact_match_rate,0.04,0.01566330399154762,0.0983707143588792,100,4/100 hidden options reproduced exactly (normalised); exploratory

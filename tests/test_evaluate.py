@@ -114,6 +114,22 @@ def main() -> int:
     except ValueError as e:
         check("an item missing one sampled run is refused", True, str(e))
 
+    # D. Unparseable runs are one category (None) whatever the pandas version (pandas 3 stores NaN).
+    # u0: 8 A + 2 unparseable; u1: 5 B + 5 unparseable; u2: 10 unparseable. Worked by hand:
+    # kappa: p_e = (64 + 25 + 289) / 900 = 0.42, p_bar = (58 + 40 + 90) / 270 = 0.6963 -> 0.4764;
+    # flips: (16 + 25 + 0) / 135 = 0.3037; unanimity 0 (all-unparseable is not unanimous).
+    items = pd.DataFrame({"id": ["u0", "u1", "u2"], "key": ["A", "B", "C"], "code": ["M", "O", "O"],
+                          "objective_subset": [True, False, True]})
+    rec = lambda i, j, x: {"id": i, "run": j, "text": f"Answer: {x}" if x else "no answer given", "finish": "stop",
+                           "new_tokens": 10, "batch_seconds": 1.0, "batch_items": 3}
+    runs = {"u0": ["A"] * 8 + [None] * 2, "u1": ["B"] * 5 + [None] * 5, "u2": [None] * 10}
+    recs = {"greedy": [rec(i, 0, "A") for i in runs],
+            "sampled": [rec(i, j, x) for i, r in runs.items() for j, x in enumerate(r)]}
+    _, res = evaluate(items, recs, cfg, n_boot=50)
+    check("unparseable runs: kappa 0.4764, flip rate 0.3037, unanimity 0",
+          close(v("fleiss_kappa_across_runs"), 0.4764) and close(v("pairwise_flip_rate"), 41 / 135)
+          and v("unanimity_rate") == 0, f"pandas {pd.__version__}")
+
     print(f"{sum(results)}/{len(results)} checks passed")
     return 0 if all(results) else 1
 

@@ -1,0 +1,283 @@
+{
+ "split": "test",
+ "n_items": 633,
+ "key_distribution": {
+  "A": 151,
+  "B": 168,
+  "C": 154,
+  "D": 160
+ },
+ "per_arm": {
+  "greedy": {
+   "records": 633,
+   "unparseable": 8,
+   "unparseable_truncated": 7,
+   "unparseable_not_truncated": 1,
+   "truncated": 7
+  },
+  "sampled": {
+   "records": 6330,
+   "unparseable": 40,
+   "unparseable_truncated": 36,
+   "unparseable_not_truncated": 4,
+   "truncated": 38
+  },
+  "greedy_rerun": {
+   "records": 50,
+   "unparseable": 1,
+   "unparseable_truncated": 0,
+   "unparseable_not_truncated": 1,
+   "truncated": 0
+  },
+  "greedy_rerun_full": {
+   "records": 633,
+   "unparseable": 9,
+   "unparseable_truncated": 7,
+   "unparseable_not_truncated": 2,
+   "truncated": 7
+  },
+  "sampled_t03": {
+   "records": 6330,
+   "unparseable": 60,
+   "unparseable_truncated": 50,
+   "unparseable_not_truncated": 10,
+   "truncated": 51
+  },
+  "sampled_t10": {
+   "records": 6330,
+   "unparseable": 54,
+   "unparseable_truncated": 46,
+   "unparseable_not_truncated": 8,
+   "truncated": 47
+  }
+ },
+ "checks_passed": 45,
+ "checks_total": 45,
+ "checks": [
+  {
+   "check": "debug IDs match the manifest checksum and count",
+   "ok": true,
+   "detail": "n = 25"
+  },
+  {
+   "check": "test IDs match the manifest checksum and count",
+   "ok": true,
+   "detail": "n = 633"
+  },
+  {
+   "check": "debug and test IDs do not overlap",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "items_final split column agrees with the ID files",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "every item has a key A-D and four non-empty options",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "answer keys are not concentrated on one letter (max share < 0.4)",
+   "ok": true,
+   "detail": "{'A': 151, 'B': 168, 'C': 154, 'D': 160}"
+  },
+  {
+   "check": "no question text shared by debug and test",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "no duplicate question text inside the split",
+   "ok": true,
+   "detail": "633 unique"
+  },
+  {
+   "check": "prompts do not depend on the answer key (key changed -> identical prompt)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "greedy: covers exactly the expected 633 items x 1 run(s), no duplicates",
+   "ok": true,
+   "detail": "633 records"
+  },
+  {
+   "check": "greedy: no missing fields or empty values",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "greedy: arm label, seed rule (base + item index), engine and model revision",
+   "ok": true,
+   "detail": "vllm==0.32.0"
+  },
+  {
+   "check": "greedy: token limit 512 respected; 'length' only at the limit",
+   "ok": true,
+   "detail": "7 truncated"
+  },
+  {
+   "check": "sampled: covers exactly the expected 633 items x 10 run(s), no duplicates",
+   "ok": true,
+   "detail": "6330 records"
+  },
+  {
+   "check": "sampled: no missing fields or empty values",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "sampled: arm label, seed rule (base + item index), engine and model revision",
+   "ok": true,
+   "detail": "vllm==0.32.0"
+  },
+  {
+   "check": "sampled: token limit 512 respected; 'length' only at the limit",
+   "ok": true,
+   "detail": "38 truncated"
+  },
+  {
+   "check": "greedy_rerun: covers exactly the expected 50 items x 1 run(s), no duplicates",
+   "ok": true,
+   "detail": "50 records"
+  },
+  {
+   "check": "greedy_rerun: no missing fields or empty values",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "greedy_rerun: arm label, seed rule (base + item index), engine and model revision",
+   "ok": true,
+   "detail": "vllm==0.32.0"
+  },
+  {
+   "check": "greedy_rerun: token limit 512 respected; 'length' only at the limit",
+   "ok": true,
+   "detail": "0 truncated"
+  },
+  {
+   "check": "greedy_rerun_full: covers exactly the expected 633 items x 1 run(s), no duplicates",
+   "ok": true,
+   "detail": "633 records"
+  },
+  {
+   "check": "greedy_rerun_full: no missing fields or empty values",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "greedy_rerun_full: arm label, seed rule (base + item index), engine and model revision",
+   "ok": true,
+   "detail": "vllm==0.32.0"
+  },
+  {
+   "check": "greedy_rerun_full: token limit 512 respected; 'length' only at the limit",
+   "ok": true,
+   "detail": "7 truncated"
+  },
+  {
+   "check": "sampled_t03: covers exactly the expected 633 items x 10 run(s), no duplicates",
+   "ok": true,
+   "detail": "6330 records"
+  },
+  {
+   "check": "sampled_t03: no missing fields or empty values",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "sampled_t03: arm label, seed rule (base + item index), engine and model revision",
+   "ok": true,
+   "detail": "vllm==0.32.0"
+  },
+  {
+   "check": "sampled_t03: token limit 512 respected; 'length' only at the limit",
+   "ok": true,
+   "detail": "51 truncated"
+  },
+  {
+   "check": "sampled_t10: covers exactly the expected 633 items x 10 run(s), no duplicates",
+   "ok": true,
+   "detail": "6330 records"
+  },
+  {
+   "check": "sampled_t10: no missing fields or empty values",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "sampled_t10: arm label, seed rule (base + item index), engine and model revision",
+   "ok": true,
+   "detail": "vllm==0.32.0"
+  },
+  {
+   "check": "sampled_t10: token limit 512 respected; 'length' only at the limit",
+   "ok": true,
+   "detail": "47 truncated"
+  },
+  {
+   "check": "probe: covers exactly the expected 100 items x 1 run(s), no duplicates",
+   "ok": true,
+   "detail": "100 records"
+  },
+  {
+   "check": "probe: no missing fields or empty values",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "probe: arm label, seed rule (base + item index), engine and model revision",
+   "ok": true,
+   "detail": "vllm==0.32.0"
+  },
+  {
+   "check": "probe: token limit 64 respected; 'length' only at the limit",
+   "ok": true,
+   "detail": "0 truncated"
+  },
+  {
+   "check": "all arms come from the same engine version",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "greedy accuracy far above the shuffled-key accuracy (alignment is real)",
+   "ok": true,
+   "detail": "true 0.6714, shuffled keys 0.2478"
+  },
+  {
+   "check": "results.csv: greedy accuracy recomputed independently",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "results.csv: difference = majority - greedy (positive favours voting)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "protocol v1 is FROZEN and v2 keeps it unchanged",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "kaggle_03_test_v1: run used commit 7890add whose protocol_v1.yaml equals today's",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "kaggle_04_extras_v1: run used commit d3bf6c0 whose protocol_v1.yaml equals today's",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "pip freeze identical across the Kaggle sessions",
+   "ok": true,
+   "detail": ""
+  }
+ ]
+}

@@ -3,6 +3,7 @@
 Fig 2: majority-of-k accuracy vs k (left) and output tokens per item vs k (right), greedy as a reference.
 Fig 3: accuracy vs coverage when answering only items with >= x of 10 runs agreeing.
 Fig 4: distribution of modal share, management (M) vs other oncology (O) items.
+Fig 5 (exploratory, protocol v2): accuracy and unanimity against temperature, greedy run and rerun at T = 0.
 Static PNG + PDF for print. Colours: validated reference palette, light mode (slot 1 blue, slot 2 orange).
 """
 from pathlib import Path
@@ -107,6 +108,39 @@ def fig_modal_share(items: pd.DataFrame, n_runs: int, out: Path) -> list[Path]:
     _style(ax)
     fig.tight_layout()
     return _save(fig, out, "fig4_modal_share")
+
+
+def fig_temperature(ex: pd.DataFrame, out: Path) -> list[Path]:
+    """Fig 5 (exploratory, protocol v2): accuracy (left) and unanimity (right) against sampling temperature.
+    Greedy and its full rerun sit at T = 0; their gap is the run-to-run noise of greedy decoding."""
+    v = lambda an, m: ex.loc[(ex.analysis == an) & (ex.metric == m)].iloc[0]
+    temps = [0.3, 0.7, 1.0]
+    maj = [v(f"temperature_{t}", "accuracy_majority10") for t in temps]
+    single = [v(f"temperature_{t}", "accuracy_single_sample_mean").value for t in temps]
+    unan = [v(f"temperature_{t}", "unanimity_rate") for t in temps]
+    g = v("greedy_self_agreement", "accuracy_greedy").value
+    g2 = v("greedy_self_agreement", "accuracy_greedy_rerun_full").value
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(7.0, 2.8))
+    a1.errorbar(temps, [m.value for m in maj], yerr=[[m.value - m.ci_low for m in maj], [m.ci_high - m.value for m in maj]],
+                color=BLUE, linewidth=1.5, marker="o", markersize=5, capsize=3, elinewidth=1, label="majority of 10 (95% CI)")
+    a1.plot(temps, single, color=ORANGE, linewidth=1.5, marker="s", markersize=5, label="one sampled run (mean of 10)")
+    a1.plot([0, 0], [g, g2], color=INK2, linestyle="none", marker="D", markersize=5, label="greedy, run and rerun")
+    a1.annotate(f"{maj[-1].value:.3f}", (temps[-1], maj[-1].value), textcoords="offset points", xytext=(6, -3),
+                fontsize=7, color=INK)
+    a1.set_xlabel("sampling temperature (T = 0 is greedy)", fontsize=8)
+    a1.set_ylabel("accuracy", fontsize=8)
+    a1.set_xticks([0] + temps)
+    fig.legend(*a1.get_legend_handles_labels(), frameon=False, fontsize=7, labelcolor=INK, loc="lower center",
+               ncol=3, bbox_to_anchor=(0.5, 0.98))
+    a2.errorbar(temps, [u.value for u in unan], yerr=[[u.value - u.ci_low for u in unan], [u.ci_high - u.value for u in unan]],
+                color=BLUE, linewidth=1.5, marker="o", markersize=5, capsize=3, elinewidth=1)
+    a2.set_xlabel("sampling temperature", fontsize=8)
+    a2.set_ylabel("share of items with 10/10 identical", fontsize=8)
+    a2.set_xticks(temps)
+    for ax in (a1, a2):
+        _style(ax)
+    fig.tight_layout()
+    return _save(fig, out, "fig5_temperature_exploratory")
 
 
 def make_all(res: pd.DataFrame, items: pd.DataFrame, n_runs: int, out: Path) -> list[Path]:

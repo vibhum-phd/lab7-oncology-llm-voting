@@ -155,7 +155,8 @@ def evaluate(items: pd.DataFrame, records: dict[str, list[dict]], cfg: dict, n_b
         rows.append(_row(f"accuracy_majority_of_first_{k}", "all", t[f"vote_k{k}_correct"].mean(), n=len(t)))
 
     # RQ2 consistency.
-    letters = t[[f"run{j}" for j in range(n_s)]].to_numpy(object)
+    # Unparseable runs are None; pandas 3 stores them as NaN in the table, so map them back to None.
+    letters = [[None if pd.isna(x) else x for x in r] for r in t[[f"run{j}" for j in range(n_s)]].to_numpy(object)]
     unanimous = np.array([len(set(r)) == 1 and r[0] is not None for r in letters], float)
     rows.append(_row("unanimity_rate", "all", unanimous.mean(), bootstrap_ci(unanimous, np.mean, n_boot, seed + 3),
                      len(t), "share of items with 10/10 identical parsed letters"))
