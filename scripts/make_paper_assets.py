@@ -233,13 +233,24 @@ def main() -> int:
     put("unsampledN", len(codes) - len(second))
 
     # Run times: generation time from the Kaggle run summaries; whole-session time from the Kaggle logs (local only).
+    # The Kaggle logs are local only; their session times are kept in results/env/session_hours.json (committed),
+    # refreshed here whenever the logs are present.
     env = res / "env"
+    hours_file = env / "session_hours.json"
+    hours = json.loads(hours_file.read_text(encoding="utf-8")) if hours_file.exists() else {}
+    for d in sorted(p.name for p in env.glob("kaggle_*") if p.is_dir()):
+        log = next((env / d).glob("*.log"), None)
+        if log:
+            hours[d] = round(json.loads(log.read_text(encoding="utf-8"))[-1]["time"] / 3600, 3)
+    if hours and env.exists():
+        hours_file.write_text(json.dumps(dict(sorted(hours.items())), indent=1) + "\n", encoding="utf-8")
     for word, d, f in (("Main", "kaggle_03_test_v1", "run_summary.json"), ("Extras", "kaggle_04_extras_v1", "run_summary_v2.json")):
         summ = env / d / f
         put(f"genHours{word}", f"{json.loads(summ.read_text(encoding='utf-8'))['total_seconds'] / 3600:.2f}"
             if summ.exists() else "n/a")
-        log = next((env / d).glob("*.log"), None) if (env / d).exists() else None
-        put(f"sessionHours{word}", f"{json.loads(log.read_text(encoding='utf-8'))[-1]['time'] / 3600:.2f}" if log else "n/a")
+        put(f"sessionHours{word}", f"{hours[d]:.2f}" if d in hours else "n/a")
+    if hours:
+        put("sessionHoursTotal", f"{sum(hours.values()):.2f}")
 
     gen = paper / "generated"
     gen.mkdir(parents=True, exist_ok=True)

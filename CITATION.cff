@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this code or these results, please cite them as below."
+title: "Does Asking Again Help? Majority Voting, Run-to-Run Consistency and Agreement of a Small Open Language Model on Oncology Exam Questions"
+type: software
+authors:
+  - family-names: "Sharma"
+    given-names: "Vibhum"
+    affiliation: "Indian Institute of Information Technology Allahabad"
+    email: "rsi2026506@iiita.ac.in"
+repository-code: "https://github.com/vibhum-phd/lab7-oncology-llm-voting"
+license: MIT
+version: "v1.1"
+date-released: "2026-11-02"
+keywords:
+  - large language models
+  - oncology
+  - majority voting
+  - self-consistency
+  - reproducibility
+  - MedQA
