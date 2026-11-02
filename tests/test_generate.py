@@ -79,8 +79,8 @@ def main() -> int:
 
         # 5. Wrong output count from an engine is refused.
         class BadEngine(MockEngine):
-            def generate(self, prompts, arm, seeds):
-                return super().generate(prompts, arm, seeds)[:-1]
+            def generate(self, prompts, arm, seeds, max_tokens=None):
+                return super().generate(prompts, arm, seeds, max_tokens)[:-1]
         try:
             run_arm(BadEngine(dec), "greedy", ids, prompts, seeds, tmp / "bad.jsonl", dec, batch_size=10)
             check("engine returning too few outputs refused", False)

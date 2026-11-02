@@ -1,0 +1,149 @@
+# Experiment protocol, version 2 = version 1 (frozen 2026-11-02 02:06 IST, commit 7890add) UNCHANGED,
+# plus the exploratory amendments in `amendments_v2` at the end of this file. Written 2026-11-02 after the
+# test run, when only the greedy-baseline validation (Prompt 10) had been viewed; the vote comparison had
+# NOT been viewed. The confirmatory test (RQ1) and every v1 setting are unchanged; the amendments add
+# exploratory runs only. Logged in research_decisions.md, "Protocol changes" and D-038.
+status: FROZEN
+frozen: "2026-11-02 02:06 IST"
+version: 2
+decisions: [D-012, D-016, D-018, D-020, D-021, D-022, D-023, D-025, D-026, D-027, D-031, D-034, D-035]
+
+data:
+  source: GBaker/MedQA-USMLE-4-options-hf      # Hugging Face, auto-converted parquet
+  dataset_commit: 17af9355ef89fba60de966eabaeba797c695f86e
+  splits_used: [train, validation, test]       # inference only; MedQA's own splits are not used as such
+  selection:
+    pool_rule: "oncology term in vignette (relative's history excluded) OR in correct answer"
+    screening_rules: data/screening/SCREENING_RULES.md
+    codes_file: data/screening/codes_adjudicated.csv   # agreement report: data/screening/SCREENING_AGREEMENT.md
+    eligible_codes: [M, O]
+    exclude_flags: [image_ref, bare_letter_options]
+  split:
+    script: scripts/make_splits.py
+    seed: 20261102
+    debug_n: 25                                # prompt/parser development only
+    # Generated 2026-11-01 from codes_adjudicated.csv (data/splits/SPLIT_MANIFEST.json):
+    # 658 items = 25 debug (5 M) + 633 test (118 M, 515 O; 271 in the objective subset).
+    debug_ids_sha256: 57354831f08a5f5a71832fe4659f1f6f531ca15698027cd2545da1f1c5024580
+    test_ids_sha256: cb1c708512d34fa727d419074a9a35256286158cf609b70baf82440dc3bfb618
+  subgroups: {management: M, other: O}
+  objective_subset: "oncology term in the correct answer (rule R4)"
+
+model:
+  name: Qwen/Qwen2.5-7B-Instruct
+  revision: a09a35458c702b33eeacc393d103063234e8bc28   # pinned 2026-11-01 (run 00)
+  dtype: float16                               # T4 has no native bfloat16; BF16 weights are cast on load
+  fallback: Qwen/Qwen2.5-7B-Instruct-AWQ       # only if FP16 fails; logged as a protocol change
+  engine: vllm==0.32.0                         # ran on 2026-11-01 (run 01 v2); see requirements-gpu.txt
+  engine_args: {tensor_parallel_size: 2, max_model_len: 2048, gpu_memory_utilization: 0.90,
+                enforce_eager: true, disable_custom_all_reduce: true, seed: 20261102}
+  chat_template: model default (tokenizer.apply_chat_template, add_generation_prompt=True)
+
+prompt:
+  system: "You are a careful medical expert. Answer the multiple-choice question."
+  user_template: |
+    {question}
+
+    Options:
+    A. {option_a}
+    B. {option_b}
+    C. {option_c}
+    D. {option_d}
+
+    Think through the question briefly, step by step. Then give your final answer on the last line,
+    exactly in the form "Answer: X", where X is one of A, B, C or D.
+  option_order: as in the dataset (ending0..ending3 -> A..D)
+  frozen_after: debug set only                 # the template may change only before freeze
+
+decoding:
+  max_tokens: 512                              # debug set: 0/300 truncated, longest 501 tokens (run 01 v2)
+  greedy: {temperature: 0.0, n: 1}
+  sampled: {temperature: 0.7, top_p: 0.8, top_k: 20, n: 10}   # model's own generation_config defaults
+  repetition_penalty: 1.05                     # same for both arms (model default)
+  sampling_seed_rule: "seed = 20261102 + item_index (index in sorted test id list)"
+  determinism_check: "rerun greedy on 50 fixed test items; report % identical outputs and answers"
+  determinism_subset: "the first 50 IDs of the sorted test ID list"
+  # debug set (run 01 v2): greedy rerun gave the same letter 25/25 but identical text only 19/25
+  # (GPU arithmetic is not bit-reproducible under batching even at temperature 0).
+  optional_temperatures: [0.3, 1.0]            # only if GPU time remains (D-018)
+
+parsing:
+  # Capital letter only, not followed by another letter, so "Answer: a combination of ..." is not read as A.
+  # Markdown bold allowed around "Answer" and the letter ("**Final Answer**: D", "Answer: **C**"): added
+  # 2026-11-02 before freezing, after the debug run produced "**Final Answer**: D" (unparseable under the
+  # first rule); on all 600 debug outputs it changes only that one letter.
+  primary_regex: "[Aa]nswer\\**\\s*:\\s*\\**\\s*\\(?([ABCD])\\)?(?![A-Za-z])"   # last match in the output
+  fallback_regex: "[Aa]nswer is\\s*\\(?([ABCD])\\)?(?![A-Za-z])"     # last match, only if primary fails
+  unparseable: "counted wrong (strict); excluded in the lenient analysis"
+  vote: "most frequent parsed letter among the 10 sampled runs; unparseable runs do not vote; tie -> letter of the earliest sampled run among the tied letters; all 10 unparseable -> unparseable"
+
+metrics:
+  primary:
+    name: accuracy_difference_majority10_minus_greedy
+    direction: higher_is_better
+    test: exact McNemar (two-sided, alpha 0.05)
+    ci: paired percentile bootstrap over items, 10000 resamples, seed 20261102
+    decision: "supported if p < 0.05 and CI lower bound > 0; practically meaningful if difference >= 3 points"
+  secondary:
+    - {name: accuracy_greedy, direction: higher_is_better}
+    - {name: accuracy_majority10, direction: higher_is_better}
+    - {name: accuracy_single_sample_mean, direction: higher_is_better, note: "mean and SD over the 10 runs"}
+    - {name: chance_corrected_accuracy, formula: "(acc - 0.25) / 0.75", direction: higher_is_better}
+    - {name: unanimity_rate, formula: "share of items with 10/10 identical parsed answers", direction: descriptive}
+    - {name: mean_modal_share, direction: descriptive}
+    - {name: fleiss_kappa_across_runs, categories: [A, B, C, D, unparseable], direction: descriptive}
+    - {name: pairwise_flip_rate, formula: "share of run pairs with different answers, averaged over items", direction: descriptive}
+    - {name: auroc_modal_share_vs_majority_correct, direction: higher_is_better, decision: "H3 supported if CI lower bound > 0.5"}
+    - {name: accuracy_by_agreement, groups: [">=9/10", "<9/10"]}
+    - {name: unparseable_rate, direction: lower_is_better}
+    - {name: truncation_rate, direction: lower_is_better}
+    - {name: output_tokens_and_gpu_seconds_per_arm, direction: lower_is_better}
+  confirmatory: [accuracy_difference_majority10_minus_greedy]   # everything else is secondary/exploratory
+
+analyses:
+  sensitivity: [lenient_parsing, objective_subset_R4, management_vs_other]
+  deep:
+    - "majority-of-k curve for k = 1, 3, 5, 7, 9, 10 (first k runs; efficiency)"
+    - "error analysis of discordant items (majority right / greedy wrong and the reverse), with real examples"
+    - "items wrong in all 11 generations: answer patterns"
+  optional: [temperature_sweep_0.3_1.0, contamination_probe_100_items]
+
+compute:
+  platform: Kaggle, 2 x T4 16 GB, internet on
+  budget_gpu_hours: {primary: 4, cap_total: 8}   # weekly Kaggle quota 30 h (D-026)
+  # measured on the debug set (run 01 v2): ~671 output tokens/s for sampled runs, model load 160 s;
+  # primary plan ~1.85 M output tokens -> roughly 1-1.5 h of session time (INFERRED from that rate).
+  resumable: true                              # outputs appended per item; restart skips done items
+
+outputs:
+  raw: results/raw/{arm}.jsonl                 # prompt id, seed, raw text, parsed letter, tokens, time
+  table_results: results/results.csv
+  figures: results/figures/
+
+amendments_v2:
+  date: "2026-11-02"
+  approved_by: "Vibhum Sharma (Prompt 12 choice: all three optional runs)"
+  results_seen_before_amendment: "greedy baseline validation only (Prompt 10, D-037); vote comparison not viewed"
+  status: exploratory          # none of these changes the confirmatory RQ1 test
+  arms:
+    greedy_rerun_full:
+      items: all 633 test items
+      decoding: same as greedy (temperature 0)
+      purpose: "how often greedy disagrees with itself on the whole set (noise floor for RQ1); motivated by 2/50 rerun changes (D-037)"
+    sampled_t03:
+      decoding: same as sampled but temperature 0.3 (top-p 0.8, top-k 20, n 10, max_tokens 512, repetition_penalty 1.05)
+      seeds: same rule as sampled (20261102 + item index)
+    sampled_t10:
+      decoding: same as sampled but temperature 1.0
+      seeds: same rule as sampled
+    probe:
+      items: 100 test items = the first 100 IDs after shuffling the sorted test list with seed 20261102
+      task: "question shown with one wrong option replaced by [MISSING]; the model is asked to write that option's exact text"
+      hidden_option: "the first option (in A-D order) that is not the key"
+      decoding: greedy, max_tokens 64
+      metric: "exact match after lowercasing and removing punctuation and extra spaces; 95% Wilson CI"
+      reading: "a high exact-match rate suggests the item text was memorised; a low rate does not prove absence"
+  analyses_v2:
+    - "greedy vs greedy_rerun_full: % same letter, accuracy of each, McNemar on discordant items (exploratory)"
+    - "for T in 0.3, 0.7 (main run), 1.0: unanimity, mean modal share, Fleiss' kappa, flip rate, single-sample mean accuracy, majority-of-10 accuracy, majority-10 minus greedy with paired bootstrap CI and McNemar (exploratory, no hypothesis)"
+    - "probe exact-match rate with Wilson CI"

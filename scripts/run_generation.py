@@ -4,6 +4,8 @@ Usage (from repo/):
   python scripts/run_generation.py --split debug --out results/raw/debug            # real engine (Kaggle)
   python scripts/run_generation.py --split debug --out <tmp> --engine mock          # CPU pipeline test
 Arms run in protocol order: greedy, sampled, greedy_rerun (first 50 sorted IDs of the split).
+Exploratory arms (protocol v2, use --config configs/protocol_v2.yaml): greedy_rerun_full (all items),
+sampled_t03, sampled_t10, probe (100 items, max 64 tokens).
 Resumable: rerunning the same command skips items already complete in each arm's file.
 """
 import argparse
@@ -15,12 +17,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from board_vote.config import load_config  # noqa: E402
+from board_vote.config import DEFAULT_CONFIG, load_config  # noqa: E402
 from board_vote.data import load_medqa, read_ids, select_items  # noqa: E402
 from board_vote.generate import MockEngine, VLLMEngine, item_seed, run_arm  # noqa: E402
+from board_vote.probe import probe_ids, probe_messages  # noqa: E402
 from board_vote.prompts import build_messages, render_prompt  # noqa: E402
 
 RERUN_N = 50
+V2_ARMS = {"greedy_rerun_full", "sampled_t03", "sampled_t10", "probe"}
+PROBE_MAX_TOKENS = 64
 
 
 class StubTokenizer:
@@ -39,11 +44,16 @@ def main() -> int:
     ap.add_argument("--engine", choices=["vllm", "mock"], default="vllm")
     ap.add_argument("--arms", default="greedy,sampled,greedy_rerun")
     ap.add_argument("--batch-size", type=int, default=64)
+    ap.add_argument("--config", default=str(DEFAULT_CONFIG))
     a = ap.parse_args()
 
-    cfg = load_config()
+    cfg = load_config(a.config)
+    arms = a.arms.split(",")
     if a.split == "test" and a.engine == "vllm" and cfg["status"] != "FROZEN":
         print(f"refusing to run the test split: protocol status is {cfg['status']}, not FROZEN")
+        return 2
+    if set(arms) & V2_ARMS and "amendments_v2" not in cfg:
+        print(f"refusing: arms {sorted(set(arms) & V2_ARMS)} need --config configs/protocol_v2.yaml")
         return 2
     ids = sorted(read_ids(ROOT / "data" / "splits" / f"{a.split}_ids.txt"))
     items = select_items(load_medqa(a.raw_dir), ids)
@@ -60,15 +70,24 @@ def main() -> int:
 
     out = Path(a.out)
     summaries, t0 = [], time.time()
-    for arm in a.arms.split(","):
-        sel = slice(0, RERUN_N) if arm == "greedy_rerun" else slice(None)
-        s = run_arm(engine, arm, ids[sel], prompts[sel], seeds[sel], out / f"{arm}.jsonl", cfg["decoding"],
-                    batch_size=a.batch_size, meta=meta)
+    for arm in arms:
+        if arm == "probe":
+            chosen = set(probe_ids(ids, cfg["model"]["engine_args"]["seed"]))
+            idx = [k for k, i in enumerate(ids) if i in chosen]
+            p_prompts = [render_prompt(probe_messages(items[k])[0], tok) for k in idx]
+            s = run_arm(engine, arm, [ids[k] for k in idx], p_prompts, [seeds[k] for k in idx], out / "probe.jsonl",
+                        cfg["decoding"], batch_size=a.batch_size, meta=meta, max_tokens=PROBE_MAX_TOKENS)
+        else:
+            sel = slice(0, RERUN_N) if arm == "greedy_rerun" else slice(None)
+            s = run_arm(engine, arm, ids[sel], prompts[sel], seeds[sel], out / f"{arm}.jsonl", cfg["decoding"],
+                        batch_size=a.batch_size, meta=meta)
         print(json.dumps(s))
         summaries.append(s)
-    summary = {"split": a.split, "engine": meta["engine"], "protocol_status": cfg["status"],
-               "n_items": len(ids), "arms": summaries, "total_seconds": round(time.time() - t0, 1)}
-    (out / "run_summary.json").write_text(json.dumps(summary, indent=1), encoding="utf-8")
+    summary = {"split": a.split, "engine": meta["engine"], "protocol_version": cfg["version"],
+               "protocol_status": cfg["status"], "n_items": len(ids), "arms": summaries,
+               "total_seconds": round(time.time() - t0, 1)}
+    name = "run_summary.json" if not set(arms) & V2_ARMS else "run_summary_v2.json"
+    (out / name).write_text(json.dumps(summary, indent=1), encoding="utf-8")
     return 0
 
 
