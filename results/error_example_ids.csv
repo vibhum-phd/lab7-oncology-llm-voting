@@ -1,0 +1,9 @@
+category,id
+b_vote_right_greedy_wrong,train-05693
+b_vote_right_greedy_wrong,train-06304
+c_greedy_right_vote_wrong,train-02711
+c_greedy_right_vote_wrong,train-06737
+wrong_all11_same_letter,dev-00201
+wrong_all11_same_letter,train-07846
+wrong_all11_mixed_letters,train-01411
+wrong_all11_mixed_letters,train-01798

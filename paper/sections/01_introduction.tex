@@ -1,0 +1,29 @@
+% 01_introduction -- written by Claude Code (D-045); revised after the peer review (Prompt 16: M1, M3, M5, m19).
+\section{Introduction}\label{sec:intro}
+AI systems, from rule-based decision support to large language models (LLMs), are increasingly evaluated against the
+decisions of multidisciplinary tumor boards~\cite{sharma2026review,zhao2020watson,liao2025,li2025imitation,asoglu2026},
+and several recent studies describe a single model recommendation per case~\cite{popescu2026,zhou2026lung,dindelegan2026}.
+Yet an LLM asked the same question again can answer differently: where tumor-board studies repeated their queries,
+agreement ranged from about a third of cases for ChatGPT~\cite{liao2025,asoglu2026} to near-perfect for some models and
+poor for reasoning models~\cite{li2025imitation}, and on benchmarks consistency also varies with the
+temperature~\cite{pinhanez2025,liu2026repro}. Repetition can also be used: several sampled answers can be combined by
+a majority vote (self-consistency~\cite{wang2022selfconsistency}), and agreement between runs can signal how far an
+answer can be trusted~\cite{rydzewski2024}. In oncology, voting has been tested with strong closed models and brought
+little benefit~\cite{holmes2023,stifini2026,windisch2026}; whether it helps a small open model, which varies more,
+is not known.
+
+We use oncology questions from the MedQA licensing-exam dataset~\cite{jin2021medqa} as a controlled testbed with a
+single keyed answer, and compare greedy decoding with a majority vote over 10 sampled runs of Qwen2.5-7B-Instruct on
+\nTest{} questions, under a protocol frozen before any model output on test items existed. We ask: (RQ1) Is the
+majority of 10 sampled runs more accurate than the greedy answer? (RQ2) How consistent are the answers across runs?
+(RQ3) Does agreement between runs flag answers that are more likely to be correct? Our contributions are:
+\begin{itemize}
+\item a pre-specified paired comparison in which the vote was \diffMain{} points more accurate than greedy decoding
+  (95\% CI \diffMainLo{} to \diffMainHi) at \tokRatio{} times the output tokens, \decompVote{} points of it, post hoc,
+  attributable to voting itself;
+\item like-for-like consistency figures: greedy repeated its answer for \rerunSamePct\% of items, two sampled runs
+  agreed for \pairAgree\%, all ten for \unanimity\%;
+\item evidence that agreement tracks correctness (AUROC \auroc), with its limits: it partly reflects item difficulty,
+  \unanimousWrongPct\% of unanimous answers were wrong, and the runs share an answer-position preference;
+\item a frozen protocol, code, item identifiers and parsed answers from which every statistic can be recomputed.
+\end{itemize}

@@ -113,8 +113,8 @@ def main() -> int:
               all(all(f in r and r[f] is not None for f in FIELDS) and r["finish"] in ("stop", "length") for r in recs))
         check(f"{arm}: arm label, seed rule (base + item index), engine and model revision",
               all(r["arm"] == arm and r["seed"] == item_seed(base, index[r["id"]])
-                  and r["model_revision"] == cfg["model"]["revision"] for r in recs)
-              and len({r["engine"] for r in recs}) == 1, recs[0]["engine"])
+                  and r.get("model_revision") == cfg["model"]["revision"] for r in recs)
+              and len({r.get("engine") for r in recs}) == 1, recs[0].get("engine"))
         trunc = sum(r["finish"] == "length" for r in recs)
         check(f"{arm}: token limit {max_tok} respected; 'length' only at the limit",
               all(r["new_tokens"] <= max_tok and (r["finish"] != "length" or r["new_tokens"] == max_tok) for r in recs),

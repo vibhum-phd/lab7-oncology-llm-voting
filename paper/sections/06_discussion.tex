@@ -1,0 +1,34 @@
+% 06_discussion -- written by Claude Code (D-045); revised after the peer review (Prompt 16: M1, M3, M4, M5, m20).
+% Mechanisms are conjectures and are worded as such.
+\section{Discussion}\label{sec:discussion}
+
+\paragraph{A modest, uncertain gain, mostly from voting.} The majority of 10 sampled answers was more accurate than a
+single greedy answer; the gain is statistically supported and its point estimate passes the threshold set in advance,
+but the data are compatible with any gain from \diffMainLo{} to \diffMainHi{} points, it costs \tokRatio{} times the
+output tokens, and most of it comes from aggregating runs rather than from sampling itself. Self-consistency was
+proposed on the intuition that several reasoning paths converge on the correct answer more often than a single
+one~\cite{wang2022selfconsistency}; our data fit this view, since greedy's wrong answers were rare among the sampled
+runs, but do not prove a mechanism. A second greedy run, parse failures, ties and the MedQA split of origin do not
+change the direction. Strong closed models gained little from voting in
+oncology~\cite{holmes2023,stifini2026,windisch2026}; a model that is already consistent has less to gain, which may
+explain the difference, but with one model tested this remains a hypothesis.
+
+\paragraph{Consistency depends on the model and its decoding.} Greedy decoding repeated its answer for
+\rerunSamePct\% of items, two sampled runs agreed for \pairAgree\%, and unanimity fell between $T$ = 0.3 and 1.0. That
+consistency varies with temperature was shown before for small open models~\cite{pinhanez2025} and clinical text
+extraction~\cite{liu2026repro}, and that it varies between models in a tumor-board study~\cite{li2025imitation}; we add
+the same picture for reasoning outputs on oncology questions. Our figures cannot be ranked against the ChatGPT
+tumor-board studies~\cite{liao2025,asoglu2026} (real cases, free text, three runs, unreported settings), and our 9-of-10
+stability (\stableTHigh--\stableTLow\%) is only loosely comparable with letter-only answers~\cite{pinhanez2025}. The
+number of runs and their consistency, which our review recommended reporting~\cite{sharma2026review}, can only be
+interpreted together with the decoding settings.
+
+\paragraph{Agreement is a weak signal.} Agreement tracked correctness (AUROC \auroc), but it needs many runs, partly
+reflects item difficulty, and \unanimousWrongPct\% of unanimous answers were wrong, all of them also wrong under greedy
+decoding. Such systematic errors, presumably gaps in knowledge or reasoning, and the runs' shared preference against
+option A are invisible to both voting and agreement.
+
+\paragraph{Implications.} These results concern exam questions with a single keyed answer, not board decisions, and say
+nothing about patient care or clinical use of model output. For studies that compare LLMs with tumor boards they
+support one reporting practice: state how many times each case was run, with which decoding settings, and how
+consistent the runs were.

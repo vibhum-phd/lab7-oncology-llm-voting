@@ -1,0 +1,63 @@
+% main.tex -- ACM acmart, acmsmall (D-006). Build: pdflatex main; bibtex main; pdflatex main; pdflatex main
+% Numbers and tables come from generated/ (scripts/make_paper_assets.py); never type a result by hand.
+% "nonacm" drops the ACM copyright/journal block for a course paper; remove it if a venue needs the full block.
+\documentclass[acmsmall,nonacm]{acmart}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\input{generated/numbers}
+
+% Marks a fact still to be checked; must be gone before release.
+\newcommand{\TOVERIFY}[1]{\textcolor{red}{[TO VERIFY: #1]}}
+% Marks a section that has not been drafted yet (one section at a time, D-042).
+\newcommand{\NOTYET}[1]{\textcolor{gray}{\textit{[#1 --- not drafted yet.]}}}
+
+\title[Majority Voting and Run Consistency of a Small Open LLM on Oncology Questions]%
+  {Does Asking Again Help? Majority Voting, Run-to-Run Consistency and Agreement of a Small Open Language Model on Oncology Exam Questions}
+% Title chosen by Claude Code at Sir's request (D-045).
+
+\author{Vibhum Sharma}
+\affiliation{%
+  \institution{Indian Institute of Information Technology Allahabad}
+  \city{Prayagraj}
+  \country{India}}
+\email{rsi2026506@iiita.ac.in}
+
+% Written last, from the final Results (every number is a macro).
+\begin{abstract}
+Studies that compare large language models (LLMs) with oncology tumor boards often query a model once per case, yet the
+same model can answer differently when asked again. Using oncology exam questions as a controlled testbed, we asked
+whether a majority vote over repeated sampled answers is more accurate than a single greedy answer for a small
+open-weight model, and how far agreement between runs signals correctness. We answered \nTest{} oncology questions from
+the MedQA licensing-exam dataset with Qwen2.5-7B-Instruct, once with greedy decoding and ten times with sampling at
+temperature 0.7, under a protocol frozen before any model output on test items existed. The majority of the ten
+sampled answers was correct for \accVoteMain\% of questions and the greedy answer for \accGreedyMain\%, a difference of
+\diffMain{} percentage points (95\% CI \diffMainLo{} to \diffMainHi; exact McNemar $p$ = \pMain), at \tokRatio{} times
+the output tokens; in a post hoc split, \decompVote{} points (\decompVoteLo{} to \decompVoteHi) came from voting itself
+rather than from sampling. Greedy decoding repeated its answer for \rerunSamePct\% of questions, two sampled runs agreed
+for \pairAgree\%, and all ten for only \unanimity\%. Agreement between runs tracked correctness (AUROC \auroc), but
+\unanimousWrongPct\% of unanimous answers were wrong, and the runs shared a preference against one answer position.
+Voting gives a modest, uncertain gain for a small open model; consistency depends on the model and its decoding settings,
+which should be reported with it; and agreement is only a weak signal of correctness. Exam questions are a proxy for,
+not a test of, tumor-board decisions.
+\end{abstract}
+
+\keywords{large language models, oncology, exam questions, self-consistency, majority voting, reproducibility, MedQA}
+
+\begin{document}
+\maketitle
+
+\input{sections/01_introduction}
+\input{sections/02_related_work}
+\input{sections/03_methodology}
+\input{sections/04_setup}
+\input{sections/05_results}
+\input{sections/06_discussion}
+\input{sections/07_limitations}
+\input{sections/08_conclusion}
+\input{sections/09_statements}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{refs}
+
+\end{document}

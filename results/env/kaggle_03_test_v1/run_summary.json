@@ -1,0 +1,30 @@
+{
+ "split": "test",
+ "engine": "vllm==0.32.0",
+ "protocol_status": "FROZEN",
+ "n_items": 633,
+ "arms": [
+  {
+   "arm": "greedy",
+   "items_total": 633,
+   "already_done": 0,
+   "generated_now": 633,
+   "seconds": 427.9
+  },
+  {
+   "arm": "sampled",
+   "items_total": 633,
+   "already_done": 0,
+   "generated_now": 633,
+   "seconds": 1580.7
+  },
+  {
+   "arm": "greedy_rerun",
+   "items_total": 50,
+   "already_done": 0,
+   "generated_now": 50,
+   "seconds": 36.7
+  }
+ ],
+ "total_seconds": 2045.3
+}

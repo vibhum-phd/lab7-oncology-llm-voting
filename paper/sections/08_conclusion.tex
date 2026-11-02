@@ -1,0 +1,9 @@
+% 08_conclusion -- written by Claude Code (D-045); revised after the peer review (Prompt 16: M5, §5 items 13-15).
+\section{Conclusion}\label{sec:conclusion}
+On oncology exam questions, taking the majority of ten sampled answers from a small open model was more accurate than
+a single greedy answer, by a modest and uncertain margin (\diffMain{} points, 95\% CI \diffMainLo{} to \diffMainHi)
+that comes mostly from voting and costs \tokRatio{} times the output tokens. The model's answers varied from run to run
+at its default sampling settings, and their agreement was only a weak signal of correctness, blind to systematic
+errors. Studies that compare LLMs with tumor boards should report how often each case was run and with which decoding
+settings. Shuffled option orders, other open models and free-text recommendations on real board cases are the natural
+next tests.

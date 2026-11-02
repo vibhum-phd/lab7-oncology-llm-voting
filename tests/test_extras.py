@@ -75,6 +75,25 @@ def main() -> int:
         check("exploratory figure 5 written (PNG and PDF)",
               all((tmp / "eval" / "figures" / f"fig5_temperature_exploratory.{x}").exists() for x in ("png", "pdf")))
 
+        # Tables and error patterns run end to end on the same mock outputs.
+        ev = str(tmp / "eval")
+        r4 = run("scripts/run_evaluation.py", "--split", "debug", "--raw", str(raw), "--out", ev, "--n-boot", "300")
+        r5 = run("scripts/make_tables.py", "--results", ev)
+        r6 = run("scripts/error_patterns.py", "--split", "debug", "--raw", str(raw), "--results", ev)
+        made = [tmp / "eval" / "tables" / "tables.md", tmp / "eval" / "error_patterns.csv", tmp / "eval" / "error_example_ids.csv"]
+        check("tables and error patterns run end to end", r4.returncode == r5.returncode == r6.returncode == 0
+              and all(p.exists() for p in made), (r4.stderr + r5.stderr + r6.stderr)[-500:])
+
+        # Paper assets (the mock outputs fail the audit's revision check; the report is still written).
+        run("scripts/audit_outputs.py", "--split", "debug", "--raw", str(raw), "--out", ev)
+        r8 = run("scripts/posthoc_review.py", "--split", "debug", "--raw", str(raw), "--results", ev)
+        check("post hoc review analyses run end to end", r8.returncode == 0 and (tmp / "eval" / "posthoc_review.csv").exists(),
+              r8.stderr[-500:])
+        r7 = run("scripts/make_paper_assets.py", "--results", ev, "--paper", str(tmp / "paper"))
+        gen = tmp / "paper" / "generated"
+        check("paper assets: number macros and 5 tables generated", r7.returncode == 0 and (gen / "numbers.tex").exists()
+              and len(list(gen.glob("tab_*.tex"))) == 5, r7.stderr[-500:])
+
     print(f"{sum(results)}/{len(results)} checks passed")
     return 0 if all(results) else 1
 

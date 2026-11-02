@@ -78,7 +78,8 @@ def main() -> int:
         x = row(metric)
         rows.append({"Measure": label, "Value [95% CI]": f"{pct(x.value)} %", "n items": int(x.n)})
     x = row("coverage_at_agreement_ge10")
-    acc10 = float(re.search(r"= ([0-9.]+)", x.note).group(1))
+    m = re.search(r"= ([0-9.]+)", x.note) if isinstance(x.note, str) else None    # no note when no item has 10/10
+    acc10 = float(m.group(1)) if m else float("nan")
     rows.append({"Measure": "Items with 10/10 agreement: coverage; vote accuracy among them",
                  "Value [95% CI]": f"{pct(x.value)} %; {pct(acc10)} %", "n items": int(x.n)})
     tables["table2_rq2_rq3_consistency"] = (pd.DataFrame(rows),

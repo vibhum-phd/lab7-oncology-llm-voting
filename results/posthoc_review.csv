@@ -1,0 +1,57 @@
+group,metric,value,ci_low,ci_high,n,note
+decomposition,single_run_mean_minus_greedy,0.009162717219589278,-0.012164296998420258,0.030805687203791402,633.0,
+decomposition,vote_minus_single_run_mean,0.025592417061611306,0.010900473933649346,0.04044233807266984,633.0,
+decomposition,vote_minus_each_run_min_to_max,0.018957345971563955,0.018957345971563955,0.0363349131121643,633.0,"b 39-49, c 21-35, McNemar p 0.00674-0.175 over the 10 runs"
+decomposition,observed_discordance_rate,0.11058451816745656,,,633.0,(b + c) / n
+origin_train,n,492.0,,,,
+origin_train,accuracy_greedy,0.6626016260162602,,,492.0,
+origin_train,accuracy_vote,0.6971544715447154,,,492.0,
+origin_train,difference,0.03455284552845528,0.004065040650406582,0.06504065040650397,492.0,"b=37, c=20, McNemar p=0.0331"
+origin_dev,n,70.0,,,,
+origin_dev,accuracy_greedy,0.6571428571428571,,,70.0,
+origin_dev,accuracy_vote,0.6857142857142857,,,70.0,
+origin_dev,difference,0.02857142857142858,-0.04285714285714293,0.11428571428571421,70.0,"b=5, c=3, McNemar p=0.727"
+origin_test,n,71.0,,,,
+origin_test,accuracy_greedy,0.7464788732394366,,,71.0,
+origin_test,accuracy_vote,0.7887323943661971,,,71.0,
+origin_test,difference,0.04225352112676051,-0.014084507042253502,0.11267605633802813,71.0,"b=4, c=1, McNemar p=0.375"
+temperature,unanimity_T0.3_minus_T0.7,0.045813586097946335,0.014218009478673022,0.07740916271721954,633.0,
+temperature,unanimity_T1.0_minus_T0.7,-0.018957345971563955,-0.05213270142180093,0.014218009478672966,633.0,
+temperature,unanimity_T1.0_minus_T0.3,-0.06477093206951029,-0.09636650868878355,-0.034755134281200584,633.0,
+rq3_comparison,modal_share_10_runs_vs_vote_correct,0.7371665343628973,0.694999313207574,0.7795416568605913,633.0,bootstrap 2000
+rq3_comparison,modal_share_first_3_runs_vs_vote_correct,0.6444155781674725,0.6042409841935034,0.6848537704331031,633.0,bootstrap 2000
+rq3_comparison,greedy_equals_vote_vs_vote_correct,0.5856426354910875,0.5507128011433949,0.6210127946604239,633.0,bootstrap 2000
+rq3_comparison,modal_share_10_runs_vs_greedy_correct,0.7488235294117647,0.7094397561523202,0.7876080842824125,633.0,bootstrap 2000
+position,greedy_wrong_chose_A,34.0,,,200.0,expected 45.3
+position,sampled_wrong_chose_A,315.0,,,1982.0,expected 463.3
+position,accuracy_greedy_key_A,0.5629139072847682,,,151.0,
+position,accuracy_vote_key_A,0.609271523178808,,,151.0,
+position,greedy_wrong_chose_B,48.0,,,200.0,expected 52.7
+position,sampled_wrong_chose_B,519.0,,,1982.0,expected 510.0
+position,accuracy_greedy_key_B,0.7321428571428571,,,168.0,
+position,accuracy_vote_key_B,0.75,,,168.0,
+position,greedy_wrong_chose_C,56.0,,,200.0,expected 51.3
+position,sampled_wrong_chose_C,545.0,,,1982.0,expected 507.7
+position,accuracy_greedy_key_C,0.7012987012987013,,,154.0,
+position,accuracy_vote_key_C,0.7402597402597403,,,154.0,
+position,greedy_wrong_chose_D,62.0,,,200.0,expected 50.7
+position,sampled_wrong_chose_D,603.0,,,1982.0,expected 501.0
+position,accuracy_greedy_key_D,0.68125,,,160.0,
+position,accuracy_vote_key_D,0.71875,,,160.0,
+position,greedy_wrong_letters_chi2_p,0.10199947296970072,,,200.0,"item level, df 3"
+majority_of_k_orders,k1,0.6804897314375986,0.669826224328594,0.6872037914691943,633.0,200 random run orders; band = 2.5-97.5 percentile over orders
+majority_of_k_orders,k2,0.6832701421800949,0.6713665086887836,0.6903633491311216,633.0,200 random run orders; band = 2.5-97.5 percentile over orders
+majority_of_k_orders,k3,0.6984913112164298,0.688783570300158,0.7109004739336493,633.0,200 random run orders; band = 2.5-97.5 percentile over orders
+majority_of_k_orders,k4,0.7004265402843601,0.6903238546603475,0.7109399684044234,633.0,200 random run orders; band = 2.5-97.5 percentile over orders
+majority_of_k_orders,k5,0.70455766192733,0.6951026856240127,0.7156793048973144,633.0,200 random run orders; band = 2.5-97.5 percentile over orders
+majority_of_k_orders,k6,0.7045497630331752,0.6951026856240127,0.7156793048973144,633.0,200 random run orders; band = 2.5-97.5 percentile over orders
+majority_of_k_orders,k7,0.7072590837282781,0.69826224328594,0.7187993680884676,633.0,200 random run orders; band = 2.5-97.5 percentile over orders
+majority_of_k_orders,k8,0.7072985781990521,0.69826224328594,0.717219589257504,633.0,200 random run orders; band = 2.5-97.5 percentile over orders
+majority_of_k_orders,k9,0.7082227488151658,0.6998420221169036,0.717219589257504,633.0,200 random run orders; band = 2.5-97.5 percentile over orders
+majority_of_k_orders,k10,0.7085150078988941,0.7045418641390205,0.7156398104265402,633.0,200 random run orders; band = 2.5-97.5 percentile over orders
+probe,hits_short_1_2_words,3.0,,,54.0,
+probe,hits_long_3plus_words,1.0,,,46.0,
+probe,hits_origin_train,2.0,,,75.0,
+probe,hits_origin_dev,1.0,,,12.0,
+probe,hits_origin_test,1.0,,,13.0,
+error_analysis,b_items_greedy_letter_runs_parsed_only,2.6904761904761907,,,42.0,

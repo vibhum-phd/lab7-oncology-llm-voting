@@ -1,0 +1,37 @@
+group,metric,value,n,pre_specified,note
+"b: vote right, greedy wrong",items,46.0,633,True,
+"b: vote right, greedy wrong",mean sampled runs giving greedy's letter (of 10),2.4565217391304346,46,True,
+"b: vote right, greedy wrong",mean sampled runs giving the key (of 10),6.782608695652174,46,True,
+"b: vote right, greedy wrong",median vote count (of 10),6.0,46,True,
+"b: vote right, greedy wrong",votes decided by the tie rule,5.0,46,True,
+"b: vote right, greedy wrong",greedy unparseable,4.0,46,True,
+"b: vote right, greedy wrong",management (M) items,11.0,46,True,
+"c: greedy right, vote wrong",items,24.0,633,True,
+"c: greedy right, vote wrong",mean sampled runs giving greedy's letter (of 10),3.0,24,True,
+"c: greedy right, vote wrong",mean sampled runs giving the key (of 10),3.0,24,True,
+"c: greedy right, vote wrong",median vote count (of 10),5.5,24,True,
+"c: greedy right, vote wrong",votes decided by the tie rule,6.0,24,True,
+"c: greedy right, vote wrong",greedy unparseable,0.0,24,True,
+"c: greedy right, vote wrong",management (M) items,5.0,24,True,
+all items,greedy letter equals the vote,0.8467614533965245,633,False,unparseable greedy counts as different
+wrong in all 11,items,78.0,633,True,
+wrong in all 11,same wrong letter in all 11 generations,41.0,78,True,
+wrong in all 11,two or more different wrong letters,35.0,78,True,
+wrong in all 11,management (M) items,14.0,78,True,M share overall 0.186
+wrong in all 11,objective-subset items,36.0,78,True,objective share overall 0.428
+10/10 unanimous,items,313.0,633,False,
+10/10 unanimous,of which wrong,41.0,313,False,
+"sampled runs, correct",runs,4308.0,6330,False,
+"sampled runs, correct",median output tokens,236.0,4308,False,
+"sampled runs, correct",truncated at 512 tokens,0.0,4308,False,
+"sampled runs, wrong or unparseable",runs,2022.0,6330,False,
+"sampled runs, wrong or unparseable",median output tokens,266.0,2022,False,
+"sampled runs, wrong or unparseable",truncated at 512 tokens,38.0,2022,False,
+greedy wrong answers,chose A,34.0,200,False,key is A for 151 of 633 items
+greedy wrong answers,chose B,48.0,200,False,key is B for 168 of 633 items
+greedy wrong answers,chose C,56.0,200,False,key is C for 154 of 633 items
+greedy wrong answers,chose D,62.0,200,False,key is D for 160 of 633 items
+T = 0.3,share of items with >= 9/10 runs agreeing,0.669826224328594,633,False,accuracy of the agreed answer on these items 0.8184
+T = 0.7,share of items with >= 9/10 runs agreeing,0.641390205371248,633,False,accuracy of the agreed answer on these items 0.8350
+T = 1.0,share of items with >= 9/10 runs agreeing,0.6224328593996841,633,False,accuracy of the agreed answer on these items 0.8477
+vote vs greedy rerun,accuracy difference,0.041074249605055235,633,False,"95% CI [0.0158, 0.0664]; McNemar exact p=0.003372; b=50, c=24"

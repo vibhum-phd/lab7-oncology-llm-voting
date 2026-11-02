@@ -1,0 +1,25 @@
+% 07_limitations -- written by Claude Code (D-045); revised after the peer review (Prompt 16: M2, M3h, M7, m1, m4, m15).
+\section{Limitations}\label{sec:limitations}
+\emph{Exam questions are a proxy.} MedQA items have one keyed answer and were written for a licensing exam; a tumor
+board weighs imaging, pathology, staging, comorbidity, guidelines and the patient's wishes, often accepts more than one
+option, and decides by discussion. Only \nM{} of our \nTest{} items concern management, and their result is imprecise.
+Nothing here measures clinical usefulness or safety.
+
+\emph{Contamination.} Most test items (\nOriginTrain{} of \nTest) come from MedQA's training split, which is widely
+redistributed; whether the model saw them is unknown. The probe is weak (one hidden option, exact match, no control
+set, many short options). Memorised items would raise accuracy and could make runs agree more, which would shrink, not
+protect, the voting gain; similar gains in items from MedQA's train, dev and test splits argue against a large effect,
+but those strata are small.
+
+\emph{Screening by AI.} Oncology relevance was coded by an AI model and checked on a sample by a second, blind instance of
+the same model, whose errors may be correlated with the first; the first screener adjudicated. The objective subset
+gave a result in the same direction.
+
+\emph{One model, prompt, option order and seed set.} The runs share a preference against option A, so their errors
+are not independent; shuffling the options per run, a second seed set and a second model are the obvious next tests.
+
+\emph{Statistics and literature.} Only RQ1 is confirmatory; other analyses are not corrected for multiple comparisons.
+Fewer items were discordant than the power calculation assumed, so the estimate may be inflated, and the management
+subgroup cannot detect gains below roughly 9--10 points. The 3-point threshold is our own choice. Several cited studies
+were read only as abstracts, and we did not review the literature on benchmark contamination, selective prediction,
+answer-position bias or GPU non-determinism.

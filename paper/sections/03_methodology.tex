@@ -1,0 +1,112 @@
+% 03_methodology -- written by Claude Code (D-045); revised after the peer review (Prompt 16: M2, M6, m1, m3, m4, m8,
+% m11, m12, m16). Settings are quoted from configs/protocol_v1.yaml (frozen); every count comes from generated/numbers.tex.
+\section{Methodology}\label{sec:method}
+
+\subsection{Study design}
+We ran a paired, within-item comparison: every test item was answered by the same model under two decoding
+strategies, and each item contributes one correct-or-wrong outcome per strategy. The study answers three questions,
+fixed before any model output on test items existed: \textbf{RQ1} (confirmatory): does the majority answer of 10
+sampled runs have higher accuracy than the greedy answer? \textbf{RQ2} (descriptive): how consistent are the
+answers across the 10 sampled runs? \textbf{RQ3}: does agreement between runs flag answers that are more likely to
+be correct? Figure~\ref{fig:flow} summarises the pipeline.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+  node distance=3.5mm and 4mm,
+  box/.style={draw, rounded corners=2pt, align=center, font=\scriptsize, inner sep=2.5pt, text width=#1},
+  box/.default=27mm,
+  arr/.style={->, >=stealth, semithick}]
+\node[box] (medqa) {MedQA, USMLE 4-option\\\medqaN{} items};
+\node[box, right=of medqa] (pool) {Oncology keyword pool\\\poolN{} items};
+\node[box, right=of pool] (screen) {AI screening M / O / X;\\blind AI re-screen of \screenN{}};
+\node[box, right=of screen] (elig) {Eligible M\,+\,O: \eligibleN;\\image / bare-letter: $-$\excludedN};
+\node[box, below=of elig] (split) {\finalN{} items, seeded split:\\debug \debugN{} $\cdot$ test \nTest};
+\node[box, left=of split] (debug) {Debug set: prompt, parser and token limit fixed; protocol frozen};
+\node[box, left=of debug] (model) {Qwen2.5-7B-Instruct, FP16,\\vLLM on 2\,$\times$\,T4};
+\node[box, left=of model] (arms) {Greedy: $T$ = 0, 1 run\\Sampled: $T$ = 0.7, 10 runs};
+\node[box, below=of arms] (parse) {Parse ``Answer: X'';\\majority vote of 10};
+\node[box, right=of parse, text width=58mm] (eval) {RQ1 accuracy difference (exact McNemar, paired bootstrap)
+  $\cdot$ RQ2 consistency (unanimity, Fleiss' $\kappa$) $\cdot$ RQ3 agreement as a flag (AUROC)};
+\node[box, right=of eval, text width=27mm, dashed] (expl) {Exploratory (v2): greedy rerun, $T$ = 0.3 / 1.0, contamination probe};
+\draw[arr] (medqa) -- (pool);
+\draw[arr] (pool) -- (screen);
+\draw[arr] (screen) -- (elig);
+\draw[arr] (elig) -- (split);
+\draw[arr] (split) -- (debug);
+\draw[arr] (debug) -- (model);
+\draw[arr] (model) -- (arms);
+\draw[arr] (arms) -- (parse);
+\draw[arr] (parse) -- (eval);
+\draw[arr, dashed] (eval) -- (expl);
+\end{tikzpicture}
+\Description{A flowchart in three rows. Top row: MedQA items, oncology keyword pool, AI screening with a blind
+re-screen, eligible items after exclusions. Middle row, right to left: the seeded split into debug and test sets,
+the debug set used to fix and freeze the protocol, the model, and the two decoding arms. Bottom row: answer parsing
+and majority vote, evaluation of the three research questions, and the exploratory runs.}
+\caption{Study pipeline. Item selection (top row, left to right), protocol freeze and generation (middle row,
+right to left), evaluation (bottom row). No model output on test items existed before the protocol was frozen.}
+\label{fig:flow}
+\end{figure}
+
+\subsection{Items}
+Items come from the English, four-option USMLE part of MedQA~\cite{jin2021medqa} on Hugging Face~\cite{medqa_hf}
+(\medqaN{} items, pinned commit). A keyword rule (term list in the repository's \texttt{count\_oncology\_items.py}) kept
+\poolN{} items with an oncology term in the vignette or the correct answer. Since the pool was drawn from all of MedQA,
+the test set mixes items from its train (\nOriginTrain), dev (\nOriginDev) and test (\nOriginTest) splits, which
+matters for contamination (Section~\ref{sec:limitations}). An AI screener (Claude Code) coded each item against written
+rules: \emph{M}, managing a known or suspected neoplasm or a direct complication; \emph{O}, a neoplasm tested otherwise
+(diagnosis, pathology, mechanism, risk, screening, adverse effects of cancer therapy); \emph{X}, incidental. With no
+clinical checker available, a second, blind instance of the same model re-coded a random 20\% sample (\screenN{} items)
+from the full text; they agreed on \screenAgree{} (Cohen's $\kappa$ = \screenKappa), and the first screener adjudicated
+the \adjudicatedN{} disagreements, changing \adjudicatedChanged{} codes (\screenChangedPct\%, our estimate of the
+miscoding rate among the \unsampledN{} unsampled items). Of \eligibleN{} eligible items (\codeM{} M, \codeO{} O),
+\excludedN{} referring to an image or with bare-letter options were removed; a seeded split left \debugN{} items for
+developing the prompt and parser and \nTest{} test items (\nM{} M, \nO{} O). An \emph{objective subset} of \nObjective{}
+test items, whose correct answer itself contains an oncology term, depends less on screening judgement.
+
+\subsection{Model, prompt and decoding}
+We used Qwen2.5-7B-Instruct~\cite{qwen2024qwen25,qwen25_7b_instruct} at a pinned revision, in 16-bit floating
+point, with its own chat template. The system message was \emph{``You are a careful medical expert. Answer the
+multiple-choice question.''}; the user message gave the question, the options A--D in the dataset's order, and the
+instruction to think briefly, step by step, and end with a line \emph{``Answer: X''}. \emph{Greedy decoding} used
+temperature 0 and one output per item; \emph{sampling} drew 10 outputs per item at temperature 0.7, top-$p$ 0.8 and
+top-$k$ 20, the model's own defaults. Both used a repetition penalty of 1.05 and at most 512 output tokens; a truncated
+output is scored as wrong, which costs the single greedy answer more than the vote, so we also report a lenient
+analysis. Seeds were a fixed base plus the item's index; the first 50 test items were run greedily twice.
+
+\subsection{Answer extraction and majority vote}
+The answer is the last ``Answer: X'' in the output (Markdown bold allowed), or else the last ``answer is X''; only
+a single capital A--D not followed by another letter counts. An output without one is \emph{unparseable} and is
+scored as wrong. The \emph{majority vote} is the most frequent letter among the parsed runs; unparseable runs do not
+vote, a tie goes to the tied letter that appeared first, and an item with no parsed run has no vote. The \emph{modal
+share} is the number of runs giving the voted letter, divided by 10.
+
+\subsection{Outcomes and statistical analysis}
+\paragraph{RQ1.} The primary outcome is the accuracy of the majority vote minus that of greedy decoding on the same
+items, tested with the exact two-sided McNemar test~\cite{mcnemar1947} on the discordant items ($b$: vote right,
+greedy wrong; $c$: the reverse), with a 95\% paired percentile bootstrap CI (10{,}000 resamples). The decision rule
+was fixed in advance: \emph{supported} if $p < 0.05$ \emph{and} the lower bound is above 0; \emph{practically
+meaningful} if the difference is at least 3 points. A power calculation for the then-planned 684 items gave a minimum
+detectable difference of 3.7--4.3 points at a nominal 80\% power (77--78\% in simulation with the exact test) for
+12--16\% discordant items. We also report the mean accuracy of a single sampled run and of a majority over the first
+$k$ runs ($k$ = 1, 3, 5, 7, 9, 10).
+\paragraph{RQ2 and RQ3.} Consistency is described (without a test) by the share of unanimous items, the mean modal
+share, Fleiss' $\kappa$~\cite{fleiss1971} over the categories A--D and unparseable, and the pairwise flip rate (the
+share of an item's 45 run pairs that disagree), with bootstrap CIs (2{,}000 resamples for $\kappa$ and the AUROC,
+10{,}000 otherwise). For RQ3, the AUROC of the modal share for a correct vote is reported; H3 is \emph{supported} if its
+lower bound exceeds 0.5, a deliberately modest bar. We also compare accuracy at $\geq$9/10 and $<$9/10 agreement and
+plot accuracy against coverage.
+\paragraph{Sensitivity.} RQ1 is repeated with unparseable greedy items dropped, on the objective subset, and in the M
+and O subgroups (M is descriptive only). Discordant items and items wrong in all 11 generations are analysed. Only
+RQ1 is confirmatory; secondary analyses are not corrected for multiple comparisons.
+
+\subsection{Protocol freeze, amendment and post hoc analyses}
+The protocol and its decision rules were frozen and committed to the project's repository (commit \texttt{7890add})
+before any model output on test items existed, and acceptance criteria for the greedy baseline were written before
+the test run. The AI assistant that designed the protocol had read the test items and keys during screening, but no
+model output. After validating the baseline, and before looking at the voting comparison, we added an exploratory
+amendment as a new protocol version: a greedy rerun of all test items, 10 sampled runs at $T$ = 0.3 and 1.0, and a
+contamination probe in which the first wrong option of 100 random test items was hidden and the model asked to
+reproduce its exact text (Wilson interval~\cite{wilson1927}). Analyses added after the results were seen, most of them
+at the request of a reviewer, are labelled \emph{post hoc}.

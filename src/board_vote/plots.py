@@ -82,6 +82,9 @@ def fig_accuracy_coverage(res: pd.DataFrame, items: pd.DataFrame, n_runs: int, o
     for x, (c, a) in enumerate(zip(cov, acc), start=1):
         if x in (1, 5, 9, 10) and x <= len(cov):
             ax.annotate(f"≥{x}/10", (c, a), textcoords="offset points", xytext=(4, 4), fontsize=7, color=INK2)
+    greedy = _metric(res, "accuracy_greedy")
+    ax.axhline(greedy, color=INK2, linewidth=1.2, linestyle="--")
+    ax.annotate("greedy, all items", (0.02, greedy), textcoords="offset points", xytext=(0, 4), fontsize=7, color=INK2)
     ax.set_xlabel("coverage (share of items answered)", fontsize=8)
     ax.set_ylabel("accuracy of answered items", fontsize=8)
     ax.set_xlim(0, 1.02)
@@ -101,7 +104,7 @@ def fig_modal_share(items: pd.DataFrame, n_runs: int, out: Path) -> list[Path]:
             continue
         share = [(np.isclose(sub["modal_share"], lv)).mean() for lv in levels]
         ax.bar(levels + offset, share, width=width, color=color, label=f"{label}, n = {len(sub)}")
-    ax.set_xlabel("modal share (runs agreeing with the vote, of 10)", fontsize=8)
+    ax.set_xlabel("runs agreeing with the vote (of 10)", fontsize=8)
     ax.set_ylabel("share of items", fontsize=8)
     ax.set_xticks(levels, [f"{int(round(lv * n_runs))}" for lv in levels])
     ax.legend(frameon=False, fontsize=7, labelcolor=INK)

@@ -1,0 +1,16 @@
+% 04_setup -- written by Claude Code (D-045); revised after the peer review (Prompt 16: M1, M6).
+\section{Experimental Setup}\label{sec:setup}
+Generation ran on Kaggle's free tier with two NVIDIA T4 GPUs (16\,GB each), using vLLM 0.32.0~\cite{kwon2023vllm}
+with PyTorch 2.13, tensor parallelism over both GPUs and a context length of 2{,}048 tokens. Both arms were generated
+in batches of 64 items, so one engine call held 64 sequences for greedy decoding and 640 for sampling; GPU time
+therefore depends on this configuration, and we use output tokens as the measure of cost. Generation took
+\genHoursMain{}~h for the main run and \genHoursExtras{}~h for the exploratory run (\sessionHoursMain{} and
+\sessionHoursExtras{}~h of GPU session). Each notebook installed pinned versions, cloned the repository at a fixed
+commit, checked dataset checksums and ran the unit tests before generating. Evaluation ran on a CPU (Python 3.12,
+pandas 3.0, NumPy 1.26, SciPy 1.17), after an audit of the saved outputs (split checksums, no question shared between
+debug and test sets, prompts independent of the answer key, identical items, engine, model revision, seeds and token
+limit in every arm, chance accuracy with shuffled keys; \auditTotal{} of \auditTotal{} checks passed). Re-running the
+evaluation on another machine reproduced the Kaggle result files byte for byte. Greedy decoding on GPUs is not exactly
+deterministic (\rerunFiftySame{} of 50 letters were the same in the 50-item rerun) and sampled outputs are not
+bit-reproducible. The raw outputs restate licensed question text and are not released; every statistic can be
+recomputed exactly from the released parsed answers, and every number in the text is inserted by a script.

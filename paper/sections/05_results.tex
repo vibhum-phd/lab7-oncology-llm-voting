@@ -1,0 +1,130 @@
+% 05_results -- written by Claude Code (D-045); revised after the peer review (Prompt 16: M1, M2, M4, M7, m2, m5-m7,
+% m13, m14). Every number is a macro from generated/numbers.tex; tables are generated/tab_*.tex. No item text is quoted.
+% Post hoc analyses come from scripts/posthoc_review.py (results/posthoc_review.csv) and are labelled as such.
+\section{Results}\label{sec:results}
+
+\paragraph{Output quality.} Every arm answered all \nTest{} test items. \unpGreedyN{} of \runsGreedyN{} greedy
+outputs (\unpGreedyPct\%) and \unpSampledN{} of \runsSampledN{} sampled outputs (\unpSampledPct\%) had no
+parseable answer; \unpGreedyTruncN{} and \unpSampledTruncN{} of these had reached the 512-token limit, and the
+remaining \unpGreedyNotTruncN{} and \unpSampledNotTruncN{}, read during baseline validation, declined to choose an
+option. \ties{} votes were decided by the tie rule.
+
+\subsection{RQ1: majority vote versus greedy decoding}
+\begin{table}[t]
+\caption{RQ1: accuracy (\%) of the majority of 10 sampled runs ($T$ = 0.7) and of greedy decoding on the same
+items. $\Delta$ = majority minus greedy in percentage points, 95\% paired bootstrap CI; $b$/$c$ = items right only
+with the vote / only with greedy; $p$ = exact McNemar test. Only the first row is confirmatory.}
+\label{tab:rq1}
+\footnotesize
+\input{generated/tab_rq1}
+\end{table}
+
+\begin{table}[t]
+\caption{Post hoc analyses of the RQ1 difference: its split into a sampling part and a voting part, the vote against
+each single run and against the second greedy run, and the difference by the MedQA split each item came from.}
+\label{tab:posthoc}
+\footnotesize
+\input{generated/tab_posthoc}
+\end{table}
+
+The majority vote answered \accVoteMain\% of the test items correctly (95\% CI \accVoteMainLo--\accVoteMainHi)
+and greedy decoding \accGreedyMain\% (\accGreedyMainLo--\accGreedyMainHi), a difference of \diffMain{} percentage
+points (95\% CI \diffMainLo{} to \diffMainHi; Table~\ref{tab:rq1}); the vote alone was right on \bMain{} items and
+greedy alone on \cMain{} (exact McNemar $p$ = \pMain). Under the pre-specified rule, H1 is \emph{supported} and the
+point estimate passes the 3-point threshold, but the interval includes smaller gains, and with only \discordancePct\%
+discordant items (12--16\% were assumed for power) a significant estimate may overstate the gain. The direction was the
+same in every sensitivity analysis: \diffLenient{} points with unparseable greedy items dropped, \diffObjective{} on the
+objective subset, \diffO{} in other-oncology items and \diffM{} (\diffMLo{} to \diffMHi) in the \nM{} management items,
+the closest proxy for treatment decisions.
+
+The comparison changes decoding and aggregation at once. In a post hoc split (Table~\ref{tab:posthoc}), a single sampled
+run was \decompSingle{} points more accurate than greedy decoding (\decompSingleLo{} to \decompSingleHi) and the vote
+\decompVote{} points more accurate than a single run (\decompVoteLo{} to \decompVoteHi), so most of the gain is due to
+voting; it was similar for items from MedQA's train, dev and test splits, and the vote also beat a second greedy run.
+Averaged over 200 random run orders (post hoc), majority-of-$k$ accuracy rose smoothly from \accKOrdOne\% ($k$ = 1) to
+\accKOrdThree\% (3), \accKOrdFive\% (5) and \accKOrdTen\% (10), whereas the protocol's first-$k$ curve depends on the run
+order (Figure~\ref{fig:k}). The 10 runs used \tokRatio{} times the output tokens of greedy decoding (\tokVoteItem{} vs.\
+\tokGreedyItem{} per item).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.86\textwidth]{figures/fig2b_majority_of_k_orders.pdf}
+\Description{Two line charts. Left: accuracy of a majority over k sampled runs for k from 1 to 10, as the protocol's
+first-k curve and as the mean over 200 random run orders with a shaded band, both above a dashed line for greedy
+decoding. Right: output tokens per item growing linearly with k.}
+\caption{Majority of $k$ sampled runs. Left: accuracy for the first $k$ runs (protocol) and averaged over 200 random
+run orders with the 2.5--97.5 percentile band (post hoc); dashed line: greedy decoding. Right: output tokens per item.}
+\label{fig:k}
+\end{figure}
+
+\subsection{RQ2 and RQ3: consistency and agreement}
+Measured like for like, greedy decoding repeated its letter for \rerunSamePct\% of items, whereas two sampled runs at
+$T$ = 0.7 agreed for \pairAgree\%; all ten agreed for only \unanimity\% (Table~\ref{tab:consistency}), with Fleiss'
+$\kappa$ \kappaRuns. The distribution of modal shares was broadly similar for management and other items
+(Figure~\ref{fig:agree}b).
+
+The modal share separated correct from wrong votes with an AUROC of \auroc{} (95\% CI \aurocLo--\aurocHi), so H3 is
+\emph{supported}. When at least 9 of 10 runs agreed (\nGeNine{} items) the vote was correct for \accGeNine\%, otherwise
+(\nLtNine{} items) for \accLtNine\%; answering only unanimous items would cover \coverageTen\% of the test set at
+\accTen\% accuracy (Figure~\ref{fig:agree}a). The signal needs many runs and partly reflects item difficulty (post hoc,
+Table~\ref{tab:consistency}): with only the first 3 runs the AUROC was \aurocFirstThree, whether greedy agreed with the
+vote gave \aurocGreedyAgree, and the 10-run modal share predicted the \emph{greedy} answer's correctness about as well
+(\aurocGreedyCorrect). \unanimousWrong{} of the \unanimousN{} unanimous items (\unanimousWrongPct\%) were unanimously
+wrong.
+
+\paragraph{Shared answer-position preference (post hoc).} Keys were spread evenly over A--D, yet wrong answers rarely
+chose A: \wrongAGreedy{} of \wrongGreedyN{} wrong greedy answers (\wrongAGreedyExp{} expected; $p$ = \wrongLettersP) and
+\wrongASampled{} of \wrongSampledN{} wrong sampled answers (\wrongASampledExp{} expected). Accuracy was lowest when the key
+was A (greedy \accGreedyKeyA\%, vote \accVoteKeyA\%, against \accGreedyKeyOtherMin--\accGreedyKeyOtherMax\% and
+\accVoteKeyOtherMin--\accVoteKeyOtherMax\% otherwise). A preference shared by all runs correlates their errors, which
+limits what a vote can correct; it may also reflect item content.
+
+\begin{table}[t]
+\caption{RQ2 and RQ3 for the 10 sampled runs at $T$ = 0.7 (\nTest{} items); percentile bootstrap CIs over items.}
+\label{tab:consistency}
+\footnotesize
+\input{generated/tab_consistency}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\begin{minipage}[b]{0.36\textwidth}\centering
+\includegraphics[width=\linewidth]{figures/fig3_accuracy_coverage.pdf}\\(a)
+\end{minipage}\hfill
+\begin{minipage}[b]{0.45\textwidth}\centering
+\includegraphics[width=\linewidth]{figures/fig4_modal_share.pdf}\\(b)
+\end{minipage}
+\Description{(a) A line chart of accuracy against coverage: accuracy rises as fewer items are answered, from the
+full test set to items with all 10 runs agreeing, all above a dashed line for greedy decoding. (b) A bar chart of the
+share of items by number of runs agreeing with the vote, for management and other items; the largest bars are at 10.}
+\caption{(a) Accuracy against coverage when only items with at least $x$ of 10 agreeing runs are answered (dashed:
+greedy on all items). (b) Runs agreeing with the vote, for management (M) and other oncology (O) items.}
+\label{fig:agree}
+\end{figure}
+
+\subsection{Exploratory analyses (protocol amendment)}
+A second greedy run of all items scored \accRerun\%, \rerunDiff{} points from the first (\rerunDiffLo{} to
+\rerunDiffHi). At $T$ = 0.3 the vote reached \accVoteTLow\% and gained \diffTLow{} points over greedy; its bootstrap
+interval (\diffTLowLo{} to \diffTLowHi) excludes zero but the McNemar test does not ($p$ = \pTLow), so it would not
+meet the frozen rule, which requires both. At $T$ = 1.0 the vote reached \accVoteTHigh\%, a gain of \diffTHigh{} points
+(\diffTHighLo{} to \diffTHighHi; $p$ = \pTHigh). Unanimity was \unanimityTLow\%, \unanimity\% and \unanimityTHigh\% at
+$T$ = 0.3, 0.7 and 1.0; in a post hoc paired comparison it was lower at 1.0 than at 0.3 by \unanDiffHighLow{} points
+(\unanDiffHighLowLo{} to \unanDiffHighLowHi), while 0.7 and 1.0 did not differ clearly (\unanDiffHighMidLo{} to
+\unanDiffHighMidHi). The AUROC stayed between \aurocTLow{} and \aurocTHigh. The contamination probe reproduced the hidden
+option exactly for \probeHits{} of \probeN{} items (Wilson interval \probeLo--\probeHi\%), \probeShortHits{} of them
+among the \probeShortN{} options of one or two words, which can be guessed.
+
+\subsection{Error analysis}
+By construction, on the \bMain{} items where only the vote was right greedy's letter was not the majority letter; the
+informative part is how rare it was: it appeared in \bGreedyLetterRunsParsed{} of the 10 sampled runs on average (for
+the \bParsedN{} items with a parsed greedy answer), while the correct letter appeared in \bKeyRuns. On the \cMain{}
+items where only greedy was right, the correct letter appeared in \cKeyRuns{} of 10 runs. \tiesB{} and \tiesC{} of
+these items, respectively, were decided by the tie rule. \allWrong{} items were answered wrongly in all 11
+generations: in \allWrongSame{} every generation chose the same wrong option (these are exactly the unanimously wrong
+items), \allWrongMixed{} had two or more different wrong options, and \allWrongUnparseable{} mixed a wrong option with
+unparseable output.
+
+As an anecdotal check, the AI assistant read two random items per category: greedy sometimes named the right
+finding but chose another option; runs sometimes split between two plausible options; in one item several runs
+declined to choose; and in always-wrong items every run reasoned towards a non-keyed diagnosis or mechanism. No
+clinician checked these readings.

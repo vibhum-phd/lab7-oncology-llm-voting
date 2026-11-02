@@ -1,0 +1,36 @@
+% 02_related_work -- written by Claude Code (D-045); revised after the peer review (Prompt 16: M3).
+% Every factual statement cites an original public paper; the author's unpublished review is cited for its scope and
+% one recommendation (D-044). "Abstract" marks sources read at abstract level only (P15 checklist I4).
+\section{Related Work}\label{sec:related}
+
+\paragraph{AI evaluated against tumor boards.} Early rule-based systems such as IBM Watson for Oncology were compared
+with board recommendations~\cite{zhao2020watson}; more recent studies compare LLMs with board decisions in breast
+cancer~\cite{liao2025,dindelegan2026}, lung cancer~\cite{popescu2026,zhou2026lung}, gynecologic
+oncology~\cite{asoglu2026} and sarcoma~\cite{li2025imitation}, simulate the board with an LLM~\cite{stifini2026}, or
+design multi-agent systems for multidisciplinary decision-making~\cite{zhang2025gi}. In earlier work we mapped this
+literature across rule-based, LLM and multi-agent approaches~\cite{sharma2026review}.
+
+\paragraph{Run-to-run consistency.} Responses of ChatGPT to the same breast-cancer cases asked three times were
+entirely consistent in only 32\% of instances (abstract; the rule is not stated)~\cite{liao2025}; with ChatGPT-5 asked
+three times per gynecologic case, the core recommendation was identical for 37.2\% of 242 cases~\cite{asoglu2026}.
+Both used default or unreported sampling settings and free-text answers. Li et al.~\cite{li2025imitation} queried four
+models 21 times on five sarcoma cases, three at temperature~0: two answered almost identically, but a reasoning model
+did not, even at temperature~0. On MedQA and MMLU-Redux, small open models repeated ten times at three temperatures
+gave a stable answer (at least 9 of 10 runs) on about half to four-fifths of the questions, answering with a letter
+only~\cite{pinhanez2025}; in clinical text extraction with open models, higher temperature generally lowered agreement
+and majority voting raised it~\cite{liu2026repro}. In oncology, exam answers varied across runs for every model
+tested~\cite{bertschmann2026}, agreement of three replicates with stated confidence picked out more reliable
+answers~\cite{rydzewski2024}, and flagship models agreed closely across temperatures on biomedical
+text~\cite{windisch2026} (abstracts).
+% Review-only recommendation, kept by Sir's decision (D-044).
+Our review recommended that such studies report how many times each case was run and how consistent the runs
+were~\cite{sharma2026review}.
+
+\paragraph{Majority voting.} Self-consistency replaces the single greedy chain of thought by several sampled ones and
+keeps the most consistent answer~\cite{wang2022selfconsistency} (abstract). In oncology, voting did not improve GPT-4
+on radiation-oncology physics questions~\cite{holmes2023}, did not significantly change GPT-5's tumor-board
+recommendations~\cite{stifini2026}, and gave marginal gains in biomedical text processing~\cite{windisch2026}. With
+small open models on medical question answering, self-consistency traded tokens for accuracy and enlarged the benefit of
+fine-tuning~\cite{bhattacharyya2026}, and voting ensembles gave small gains~\cite{zhan2026} (abstracts). In the records
+we screened, no study isolated the voting effect for a small open model on oncology questions with reported decoding,
+or examined agreement as a correctness signal with reasoning outputs on such questions.

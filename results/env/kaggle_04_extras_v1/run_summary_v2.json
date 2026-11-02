@@ -1,0 +1,38 @@
+{
+ "split": "test",
+ "engine": "vllm==0.32.0",
+ "protocol_version": 2,
+ "protocol_status": "FROZEN",
+ "n_items": 633,
+ "arms": [
+  {
+   "arm": "greedy_rerun_full",
+   "items_total": 633,
+   "already_done": 0,
+   "generated_now": 633,
+   "seconds": 386.3
+  },
+  {
+   "arm": "probe",
+   "items_total": 100,
+   "already_done": 0,
+   "generated_now": 100,
+   "seconds": 13.7
+  },
+  {
+   "arm": "sampled_t03",
+   "items_total": 633,
+   "already_done": 0,
+   "generated_now": 633,
+   "seconds": 1516.4
+  },
+  {
+   "arm": "sampled_t10",
+   "items_total": 633,
+   "already_done": 0,
+   "generated_now": 633,
+   "seconds": 1494.0
+  }
+ ],
+ "total_seconds": 3410.4
+}
